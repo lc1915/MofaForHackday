@@ -66,7 +66,7 @@ public class FirstActivity extends Activity {
 			public void onClick(View v) {
 				Intent sendIntent = new Intent();  
 				sendIntent.setAction(Intent.ACTION_SEND);  
-				sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");  
+				sendIntent.putExtra(Intent.EXTRA_TEXT, "我在使用模法处理图片哦~你也来试试吧！");  
 				sendIntent.setType("text/plain");  
 				startActivity(sendIntent);  
 			}

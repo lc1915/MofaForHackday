@@ -41,7 +41,8 @@ public class OkActivity extends Activity {
 
 		if (MainActivity.icon != null)
 			bitmap = MainActivity.icon;
-		bitmap = MainActivity.newBitmap;
+		else
+			bitmap = MainActivity.newBitmap;
 		myImageView.setImageBitmap(bitmap);
 		wallpaperManager = WallpaperManager.getInstance(this);
 
@@ -75,28 +76,10 @@ public class OkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
-				shareIntent.setType("image/*");
-
-				// 先储存到sd卡中
-				File f = new File("/sdcard/" + bitmap + ".png");
-				FileOutputStream fOut = null;
-				try {
-					f.createNewFile();
-					fOut = new FileOutputStream(f);
-					bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-					fOut.flush();
-					fOut.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				// 再分享uri，如果直接分享bitmap会超过intent的上限
-				Uri uri = Uri.fromFile(getFileStreamPath(bitmap + ".png"));
-				shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-				startActivity(Intent.createChooser(shareIntent, getTitle()));
+				File file = new File("/sdcard/" + bitmap + ".png");
+			    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file)); 
+			    shareIntent.setType("image/jpeg"); 
+			    startActivity(Intent.createChooser(shareIntent, getTitle())); 
 			}
 		});
 

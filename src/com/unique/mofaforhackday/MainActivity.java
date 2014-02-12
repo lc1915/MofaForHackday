@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -34,6 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
@@ -43,9 +45,15 @@ public class MainActivity extends Activity {
 	private ImageView myImageView;
 	private SeekBar seekBar;
 	private ImageButton saveButton;
+	private ImageButton saveButton2;
 	private ImageButton wordButton;
+	private ImageButton fontButton;
+	private ImageButton haoButton;
 	private EditText editText;
 	int progress0;
+
+	private RelativeLayout relativeLayout0;
+	private RelativeLayout relativeLayout1;
 
 	private Uri selectedImage;// 从sd卡中获取的图片的uri
 	private static int RESULT_LOAD_IMAGE = 0;// onActivityResult中requestCode的值
@@ -71,15 +79,22 @@ public class MainActivity extends Activity {
 		seekBar = (SeekBar) findViewById(R.id.seekBar1);
 		editText = (EditText) findViewById(R.id.editText1);
 		saveButton = (ImageButton) findViewById(R.id.imageButton_ok);
+		saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
 		wordButton = (ImageButton) findViewById(R.id.imageButton_word);
+		fontButton = (ImageButton) findViewById(R.id.imageButton_font);
+		haoButton = (ImageButton) findViewById(R.id.imageButton_hao);
+
+		relativeLayout0 = (RelativeLayout) findViewById(R.id.relativeLayout0);
+		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
 
 		bitmap0 = FirstActivity.bitmap;
 		newBitmap = FirstActivity.bitmap;
+		icon=FirstActivity.bitmap;//后来加的
 		myImageView.setImageBitmap(bitmap0);
 		stackBlurManager = new StackBlurManager(bitmap0);
 
 		wallpaperManager = WallpaperManager.getInstance(this);
-		fontString = "font/yahei.ttf";
+		fontString = "font/Brand.ttf";
 		str1 = "";
 
 		final Context context = this;
@@ -112,7 +127,8 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				if (icon != null)
 					saveMyBitmap(icon, icon + "");
-				saveMyBitmap(newBitmap, newBitmap + "");
+				else
+					saveMyBitmap(newBitmap, newBitmap + "");
 
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, OkActivity.class);
@@ -121,10 +137,87 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		// 监听 保存button2
+		saveButton2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (icon != null)
+					saveMyBitmap(icon, icon + "");
+				else
+					saveMyBitmap(newBitmap, newBitmap + "");
+
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, OkActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+
+		// 监听 输入文字button
 		wordButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout1.setVisibility(View.VISIBLE);
+				editText.setFocusable(true);
 
+				seekBar.setPadding(32, 0, 32, 106);
+			}
+		});
+
+		final String[] singleChoiceItems = { "Brand", "Digetrax", "方正韵动特黑简体",
+				"方正综艺", "Kildor", "manteka", "Multicolore", "Meptune8", "Rose",
+				"造字公房尚黑" };
+		final int defaultSelectedIndex = 0;// 单选框默认值：从0开始
+
+		fontButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.e("aa", "xuanle");
+				AlertDialog builder = new AlertDialog.Builder(context)
+						.setTitle("选择字体")// 设置对话框标题
+						.setIcon(android.R.drawable.ic_dialog_info)// 设置对话框图标
+						.setSingleChoiceItems(
+								singleChoiceItems,
+								defaultSelectedIndex,
+								new android.content.DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										// TODO Auto-generated method stub
+										if (which == 0)
+											fontString = "font/Brand.ttf";
+										else if (which == 1)
+											fontString = "font/Digitrax.ttf";
+										else if (which == 2)
+											fontString = "font/fzyundong.ttf";
+										else if (which == 3)
+											fontString = "font/fzzongyi_GBK.ttf";
+										else if (which == 4)
+											fontString = "font/Kildor.ttf";
+										else if (which == 5)
+											fontString = "font/manteka.ttf";
+										else if (which == 6)
+											fontString = "font/Multicolore.ttf";
+										else if (which == 7)
+											fontString = "font/Neptune8.ttf";
+										else if (which == 8)
+											fontString = "font/Rose.ttf";
+										else if (which == 9)
+											fontString = "font/zaozigongfang.ttf";
+									}
+								}).setPositiveButton("确定", null)// 设置对话框[肯定]按钮
+						.setNegativeButton("取消", null)// 设置对话框[否定]按钮
+						.show();
+				drawNewBitmap(myImageView, str1);
+			}
+		});
+
+		haoButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (icon != null)
+					newBitmap = icon;
 			}
 		});
 
@@ -181,7 +274,10 @@ public class MainActivity extends Activity {
 		int height = photo.getHeight();
 		System.out.println("宽" + width + "高" + height);
 
-		icon = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); // 建立一个空的BItMap
+		icon = Bitmap.createBitmap(720, 1280, Bitmap.Config.ARGB_8888); // 建立一个空的BItMap
+																		// 之前是(width,
+																		// height,
+																		// Bitmap.Config.ARGB_8888)
 		Canvas canvas = new Canvas(icon);// 初始化画布绘制的图像到icon上
 
 		Paint photoPaint = new Paint(); // 建立画笔
@@ -189,30 +285,30 @@ public class MainActivity extends Activity {
 		photoPaint.setFilterBitmap(true);// 过滤一些
 
 		Rect src = new Rect(0, 0, photo.getWidth(), photo.getHeight());// 创建一个指定的新矩形的坐标
-		Rect dst = new Rect(0, 0, width, height);// 创建一个指定的新矩形的坐标
+		Rect dst = new Rect(0, 0, 720, 1280);// 创建一个指定的新矩形的坐标 之前是(0, 0, width,
+												// height)
 		canvas.drawBitmap(photo, src, dst, photoPaint);// 将photo
 														// 缩放或则扩大到dst使用的填充区photoPaint
 
 		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG
 				| Paint.DEV_KERN_TEXT_FLAG);// 设置画笔
 		textPaint.setTextAlign(Paint.Align.CENTER);// 中心
-		textPaint.setShadowLayer(10, 10, 10, Color.GRAY);// 设置阴影
-		textPaint.setTextSize(80.0f);// 字体大小
+		textPaint.setShadowLayer(10, 0, 6, R.color.myColor);// 设置阴影
+		textPaint.setTextSize(100.0f);// 字体大小
 
 		// 设置自带字体
-		// AssetManager assetManager = getApplicationContext().getAssets();
-		// Log.e("ziti", fontString);
-		// Typeface typeFace = Typeface.createFromAsset(assetManager,
-		// fontString);
-		// textPaint.setTypeface(typeFace);
+		AssetManager assetManager = getApplicationContext().getAssets();
+		Log.e("ziti", fontString);
+		Typeface typeFace = Typeface.createFromAsset(assetManager, fontString);
+		textPaint.setTypeface(typeFace);
 
-		textPaint.setColor(Color.BLACK);// 采用的颜色
-		// textPaint.setAlpha(30);// 设置透明度
+		textPaint.setColor(Color.WHITE);// 采用的颜色
+		// textPaint.setAlpha(64);// 设置透明度
 
 		if (startX == 0 && startY == 0)
 			canvas.drawText(str, bitmap0.getWidth() / 2,
 					bitmap0.getHeight() / 2, textPaint);
-		canvas.drawText(str, startX, startY, textPaint);
+		canvas.drawText(str, startX, startY + 100, textPaint);
 		canvas.save(Canvas.ALL_SAVE_FLAG);
 		canvas.restore();
 		imageView.setImageBitmap(icon);
@@ -263,34 +359,20 @@ public class MainActivity extends Activity {
 				startY = event.getY();
 				Log.e("starty", startY + "");
 
-				float x = 360;
-				float y = 540;
-				if (width > 720 && height > 1080) {
-					x = width / 2 - 360 + startX;
-					y = height / 2 - 540 + startY;
-				} else if (width > 720 && height < 1080) {
-					int k = 1080 / height;
-					width = k * width;
-					height = 1080;
-					x = width / 2 - 360 + startX;
-					y = startY;
-				} else if (width < 720 && height > 1080) {
-					int k = 720 / width;
-					height = height * k;
-					x = startX * k;
-					y = height / 2 - 540 + startY;
-				} else if (720 / width >= 1080 / height) {
-					int k = 720 / width;
-					x = startX * k;
-					y = startY * k;
-				} else if (720 / width < 1080 / height) {
-					int k = 1080 / height;
-					x = startX * k;
-					y = startY * k;
-				}
-
-				startX = x;
-				startY = y;
+				/*
+				 * float x = 360; float y = 540; if (width > 720 && height >
+				 * 1080) { x = width / 2 - 360 + startX; y = height / 2 - 540 +
+				 * startY; } else if (width > 720 && height < 1080) { int k =
+				 * 1080 / height; width = k * width; height = 1080; x = width /
+				 * 2 - 360 + startX; y = startY; } else if (width < 720 &&
+				 * height > 1080) { int k = 720 / width; height = height * k; x
+				 * = startX * k; y = height / 2 - 540 + startY; } else if (720 /
+				 * width >= 1080 / height) { int k = 720 / width; x = startX *
+				 * k; y = startY * k; } else if (720 / width < 1080 / height) {
+				 * int k = 1080 / height; x = startX * k; y = startY * k; }
+				 * 
+				 * startX = x; startY = y;
+				 */
 				drawNewBitmap(myImageView, str1);
 				break;
 			// 用户手指在屏幕上移动的动作
@@ -342,7 +424,7 @@ public class MainActivity extends Activity {
 		try {
 			f.createNewFile();
 			fOut = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);// 把100调低
 			fOut.flush();
 			fOut.close();
 		} catch (FileNotFoundException e) {

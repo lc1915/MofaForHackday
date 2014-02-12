@@ -20,21 +20,26 @@
 
         <SeekBar
             android:id="@+id/seekBar1"
-            android:layout_width="match_parent"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="86dp"
-            android:layout_marginLeft="22.5dp"
-            android:layout_marginRight="22.5dp"
+            android:layout_marginLeft="7.5dp"
+            android:layout_marginRight="7.5dp"
+            android:layout_centerInParent="true"
+            android:minHeight="13.15dp"
+            android:maxHeight="13.15dp"
+            android:thumbOffset="0.0dip" 
             android:progressDrawable="@drawable/seek_drawable"
-            android:thumb="@drawable/mofa_0006_seekbar_thumb" />
+            android:thumb="@drawable/thumb" />
 
         <RelativeLayout
+            android:id="@+id/relativeLayout0"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="26.5dp" >
+            android:layout_marginBottom="28.5dp" >
 
             <ImageButton
                 android:id="@+id/imageButton_word"
@@ -56,33 +61,74 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="140dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="26.5dp" 
-            android:visibility="gone">
+            android:layout_marginBottom="24.5dp"
+            android:visibility="gone" >
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="54.5dp" >
+
+                <ImageButton
+                    android:id="@+id/imageButton_word2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/word_selector" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_ok2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imageButton_word2"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/ok_selector" />
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/editText1"
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="30dp"
+                android:background="@drawable/rounded_edittext"
                 android:ems="10"
                 android:gravity="center"
+                android:textColor="#ffffff"
                 android:hint="输入文字"
                 android:textColorHint="#ffffff" >
             </EditText>
 
             <ImageButton
-                android:id="@+id/imageButton_ok0"
+                android:id="@+id/imageButton_font"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/editText1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="78dp"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/font_selector" />
+            
+            <ImageButton
+                android:id="@+id/imageButton_hao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
-                android:background="@drawable/ok_selector" />
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/jia_selector" />
+            
         </RelativeLayout>
     </RelativeLayout>
 

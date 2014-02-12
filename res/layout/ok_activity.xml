@@ -22,7 +22,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="91dp"
-            android:layout_marginLeft="141.5dp"
+            android:layout_marginLeft="144.5dp"
             android:background="@drawable/wallpaper_selector" />
 
         <ImageButton
