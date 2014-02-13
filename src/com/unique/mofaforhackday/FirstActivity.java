@@ -57,7 +57,6 @@ public class FirstActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(FirstActivity.this, AboutActivity.class);
 				startActivity(intent);
-				finish();
 			}
 		});
 

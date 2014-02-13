@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:minHeight="13.15dp"
             android:maxHeight="13.15dp"
-            android:thumbOffset="0.0dip" 
+            android:thumbOffset="5.0dip" 
             android:progressDrawable="@drawable/seek_drawable"
             android:thumb="@drawable/thumb" />
 

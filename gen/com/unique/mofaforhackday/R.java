@@ -63,11 +63,13 @@ public final class R {
         public static final int ok_selector=0x7f020024;
         public static final int rounded_edittext=0x7f020025;
         public static final int seek_drawable=0x7f020026;
-        public static final int share0_selector=0x7f020027;
-        public static final int share_selector=0x7f020028;
-        public static final int thumb=0x7f020029;
-        public static final int wallpaper_selector=0x7f02002a;
-        public static final int word_selector=0x7f02002b;
+        public static final int seekbar1=0x7f020027;
+        public static final int seekbar2=0x7f020028;
+        public static final int share0_selector=0x7f020029;
+        public static final int share_selector=0x7f02002a;
+        public static final int thumb=0x7f02002b;
+        public static final int wallpaper_selector=0x7f02002c;
+        public static final int word_selector=0x7f02002d;
     }
     public static final class id {
         public static final int SecondaryProgress=0x01010000;

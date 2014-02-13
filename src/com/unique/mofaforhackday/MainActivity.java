@@ -25,6 +25,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -318,15 +319,10 @@ public class MainActivity extends Activity {
 	private View.OnTouchListener touch = new OnTouchListener() {
 
 		Canvas canvas;
-		Paint paint;
 		Bitmap icon0;
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			paint = new Paint();
-			paint.setStrokeWidth(5);
-			paint.setColor(Color.BLACK);
-
 			switch (event.getAction()) {
 			// 用户按下动作
 			case MotionEvent.ACTION_DOWN:
@@ -424,7 +420,7 @@ public class MainActivity extends Activity {
 		try {
 			f.createNewFile();
 			fOut = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);// 把100调低
+			bitmap.compress(Bitmap.CompressFormat.PNG, 10, fOut);// 把100调低
 			fOut.flush();
 			fOut.close();
 		} catch (FileNotFoundException e) {
