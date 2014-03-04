@@ -41,6 +41,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
+import android.renderscript.*;
+
 public class MainActivity extends Activity {
 
 	private ImageView myImageView;
@@ -48,6 +50,7 @@ public class MainActivity extends Activity {
 	private ImageButton saveButton;
 	private ImageButton saveButton2;
 	private ImageButton wordButton;
+	private ImageButton wordButton2;
 	private ImageButton fontButton;
 	private ImageButton haoButton;
 	private EditText editText;
@@ -82,6 +85,7 @@ public class MainActivity extends Activity {
 		saveButton = (ImageButton) findViewById(R.id.imageButton_ok);
 		saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
 		wordButton = (ImageButton) findViewById(R.id.imageButton_word);
+		wordButton2=(ImageButton)findViewById(R.id.imageButton_word2);
 		fontButton = (ImageButton) findViewById(R.id.imageButton_font);
 		haoButton = (ImageButton) findViewById(R.id.imageButton_hao);
 
@@ -90,7 +94,7 @@ public class MainActivity extends Activity {
 
 		bitmap0 = FirstActivity.bitmap;
 		newBitmap = FirstActivity.bitmap;
-		icon=FirstActivity.bitmap;//后来加的
+		icon = FirstActivity.bitmap;// 后来加的
 		myImageView.setImageBitmap(bitmap0);
 		stackBlurManager = new StackBlurManager(bitmap0);
 
@@ -104,9 +108,12 @@ public class MainActivity extends Activity {
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
+				
+				stackBlurManager.process(progress0 * 2);
+				myImageView.setImageBitmap(stackBlurManager.returnBlurredImage());
 
-				AsyncTaskThread thread = new AsyncTaskThread();
-				thread.doInBackground(bitmap0);
+				//AsyncTaskThread thread = new AsyncTaskThread();
+				//thread.doInBackground(bitmap0);
 			}
 
 			@Override
@@ -162,7 +169,15 @@ public class MainActivity extends Activity {
 				relativeLayout1.setVisibility(View.VISIBLE);
 				editText.setFocusable(true);
 
-				seekBar.setPadding(32, 0, 32, 106);
+				//seekBar.setPadding(32, 0, 32, 106);// 1080p是(48, 0, 48, 106)
+			}
+		});
+		
+		wordButton2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.VISIBLE);
 			}
 		});
 
@@ -275,10 +290,10 @@ public class MainActivity extends Activity {
 		int height = photo.getHeight();
 		System.out.println("宽" + width + "高" + height);
 
-		icon = Bitmap.createBitmap(720, 1280, Bitmap.Config.ARGB_8888); // 建立一个空的BItMap
-																		// 之前是(width,
-																		// height,
-																		// Bitmap.Config.ARGB_8888)
+		icon = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); // 建立一个空的BItMap
+		// 之前改成了(720,
+		// 1280,
+		// Bitmap.Config.ARGB_8888)
 		Canvas canvas = new Canvas(icon);// 初始化画布绘制的图像到icon上
 
 		Paint photoPaint = new Paint(); // 建立画笔
@@ -286,8 +301,9 @@ public class MainActivity extends Activity {
 		photoPaint.setFilterBitmap(true);// 过滤一些
 
 		Rect src = new Rect(0, 0, photo.getWidth(), photo.getHeight());// 创建一个指定的新矩形的坐标
-		Rect dst = new Rect(0, 0, 720, 1280);// 创建一个指定的新矩形的坐标 之前是(0, 0, width,
-												// height)
+		Rect dst = new Rect(0, 0, width, height);// 创建一个指定的新矩形的坐标 之前改成了(0, 0,
+													// 720,
+													// 1280)，图片变形
 		canvas.drawBitmap(photo, src, dst, photoPaint);// 将photo
 														// 缩放或则扩大到dst使用的填充区photoPaint
 

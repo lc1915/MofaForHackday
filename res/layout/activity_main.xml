@@ -12,71 +12,50 @@
         android:layout_centerVertical="true"
         android:scaleType="centerCrop" />
 
-    <RelativeLayout
+    <com.unique.mofaforhackday.WrapSlidingDrawer
+        android:id="@+id/slidingDrawer1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:content="@+id/content"
+        android:handle="@+id/handle"
+        android:orientation="vertical" >
 
-        <SeekBar
-            android:id="@+id/seekBar1"
-            android:layout_width="360dp"
+        <Button
+            android:id="@+id/handle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="86dp"
-            android:layout_marginLeft="7.5dp"
-            android:layout_marginRight="7.5dp"
-            android:layout_centerInParent="true"
-            android:minHeight="13.15dp"
-            android:maxHeight="13.15dp"
-            android:thumbOffset="5.0dip" 
-            android:progressDrawable="@drawable/seek_drawable"
-            android:thumb="@drawable/thumb" />
+            android:text="Handle" />
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout0"
+        <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="28.5dp" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <ImageButton
-                android:id="@+id/imageButton_word"
-                android:layout_width="wrap_content"
+            <SeekBar
+                android:id="@+id/seekBar1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/word_selector" />
-
-            <ImageButton
-                android:id="@+id/imageButton_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imageButton_word"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
-                android:background="@drawable/ok_selector" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="24.5dp"
-            android:visibility="gone" >
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="7.5dp"
+                android:layout_marginRight="7.5dp"
+                android:layout_marginTop="16dp"
+                android:maxHeight="13.15dp"
+                android:minHeight="13.15dp"
+                android:progressDrawable="@drawable/seek_drawable"
+                android:thumb="@drawable/thumb"
+                android:thumbOffset="5.0dip" />
 
             <RelativeLayout
-                android:id="@+id/relativeLayout2"
+                android:id="@+id/relativeLayout0"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="54.5dp" >
+                android:layout_marginBottom="28.5dp" >
 
                 <ImageButton
-                    android:id="@+id/imageButton_word2"
+                    android:id="@+id/imageButton_word"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -85,51 +64,85 @@
                     android:background="@drawable/word_selector" />
 
                 <ImageButton
-                    android:id="@+id/imageButton_ok2"
+                    android:id="@+id/imageButton_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imageButton_word2"
+                    android:layout_alignBottom="@+id/imageButton_word"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:background="@drawable/ok_selector" />
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/editText1"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+            <RelativeLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/rounded_edittext"
-                android:ems="10"
-                android:gravity="center"
-                android:textColor="#ffffff"
-                android:hint="输入文字"
-                android:textColorHint="#ffffff" >
-            </EditText>
+                android:layout_marginBottom="24.5dp"
+                android:visibility="gone" >
 
-            <ImageButton
-                android:id="@+id/imageButton_font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="78dp"
-                android:layout_marginBottom="7dp"
-                android:background="@drawable/font_selector" />
-            
-            <ImageButton
-                android:id="@+id/imageButton_hao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="7dp"
-                android:background="@drawable/jia_selector" />
-            
-        </RelativeLayout>
-    </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="54.5dp" >
+
+                    <ImageButton
+                        android:id="@+id/imageButton_word2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:background="@drawable/word_selector" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton_ok2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/imageButton_word2"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="30dp"
+                        android:background="@drawable/ok_selector" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/editText1"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="输入文字"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff" >
+                </EditText>
+
+                <ImageButton
+                    android:id="@+id/imageButton_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginRight="78dp"
+                    android:background="@drawable/font_selector" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_hao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/jia_selector" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.unique.mofaforhackday.WrapSlidingDrawer>
 
 </RelativeLayout>
