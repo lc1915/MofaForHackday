@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -26,38 +27,53 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.SlidingDrawer;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
 import android.renderscript.*;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 
 public class MainActivity extends Activity {
 
+	private int intCounter = 0;
+	private boolean a = false;
+	private int textSize;
+
 	private ImageView myImageView;
 	private SeekBar seekBar;
+	private SeekBar textSeekBar;
 	private ImageButton saveButton;
 	private ImageButton saveButton2;
 	private ImageButton wordButton;
 	private ImageButton wordButton2;
 	private ImageButton fontButton;
 	private ImageButton haoButton;
+	private ImageButton textsizeButton;
+	private SlidingDrawer slidingDrawer;
 	private EditText editText;
 	int progress0;
 
 	private RelativeLayout relativeLayout0;
 	private RelativeLayout relativeLayout1;
+	private RelativeLayout relativeLayout2;
+	private RelativeLayout relativeLayout3;
 
 	private Uri selectedImage;// 从sd卡中获取的图片的uri
 	private static int RESULT_LOAD_IMAGE = 0;// onActivityResult中requestCode的值
@@ -71,30 +87,44 @@ public class MainActivity extends Activity {
 	String fontString;
 
 	private StackBlurManager stackBlurManager;
+	Handler mHandler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.activity_main);
+
+		// this.mHandleView.performClick();
 
 		myImageView = (ImageView) findViewById(R.id.imageView1);
 		myImageView.setOnTouchListener(touch);// 使图片可触摸
 		seekBar = (SeekBar) findViewById(R.id.seekBar1);
+		seekBar.setMax(24);
+		textSeekBar=(SeekBar)findViewById(R.id.seekBar_text);
+		textSeekBar.setMax(200);
 		editText = (EditText) findViewById(R.id.editText1);
 		saveButton = (ImageButton) findViewById(R.id.imageButton_ok);
 		saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
 		wordButton = (ImageButton) findViewById(R.id.imageButton_word);
-		wordButton2=(ImageButton)findViewById(R.id.imageButton_word2);
+		wordButton2 = (ImageButton) findViewById(R.id.imageButton_word2);
 		fontButton = (ImageButton) findViewById(R.id.imageButton_font);
+		textsizeButton=(ImageButton)findViewById(R.id.imageButton_textsize);
 		haoButton = (ImageButton) findViewById(R.id.imageButton_hao);
 
 		relativeLayout0 = (RelativeLayout) findViewById(R.id.relativeLayout0);
 		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
+		relativeLayout2 = (RelativeLayout) findViewById(R.id.relativeLayout2);
+		relativeLayout3 = (RelativeLayout) findViewById(R.id.relativeLayout3);
 
-		bitmap0 = FirstActivity.bitmap;
-		newBitmap = FirstActivity.bitmap;
-		icon = FirstActivity.bitmap;// 后来加的
+		bitmap0 = CutPictureActivity.icon;
+		newBitmap = CutPictureActivity.icon;
+		icon = CutPictureActivity.icon;// 后来加的
+		
+		textSize=60;
+
 		myImageView.setImageBitmap(bitmap0);
 		stackBlurManager = new StackBlurManager(bitmap0);
 
@@ -108,17 +138,19 @@ public class MainActivity extends Activity {
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				
-				stackBlurManager.process(progress0 * 2);
-				myImageView.setImageBitmap(stackBlurManager.returnBlurredImage());
 
-				//AsyncTaskThread thread = new AsyncTaskThread();
-				//thread.doInBackground(bitmap0);
+				// stackBlurManager.process(progress0 * 2);
+				// myImageView.setImageBitmap(stackBlurManager.returnBlurredImage());
+
+				AsyncTaskThread thread = new AsyncTaskThread();
+				thread.doInBackground(bitmap0);
+
+				//mHandler.post(fadeInTask);
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-
+				//mHandler.removeCallbacks(fadeInTask);
 			}
 
 			@Override
@@ -126,6 +158,46 @@ public class MainActivity extends Activity {
 					boolean fromUser) {
 				progress0 = progress;
 
+				/*
+				 * if (progress0 == 3 | progress0 == 6 | progress0 == 9 |
+				 * progress0 == 12 | progress0 == 15 | progress0 == 18 |
+				 * progress0 == 21 | progress0 == 24) {
+				 * 
+				 * AsyncTaskThread thread = new AsyncTaskThread();
+				 * thread.doInBackground(bitmap0); }
+				 */
+
+				// Bitmap result = rsBlur(bitmap0, MainActivity.this,
+				// progress+1);
+				// Bitmap result1 = rsBlur(result, MainActivity.this,
+				// progress+1);
+				// myImageView.setImageBitmap(result1);
+
+				// Log.e("progress", "radius=" + progress);
+
+			}
+		});
+		
+		textSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				textSize=progress+50;
+				drawNewBitmap(myImageView, str1);
 			}
 		});
 
@@ -133,10 +205,9 @@ public class MainActivity extends Activity {
 		saveButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (icon != null)
-					saveMyBitmap(icon, icon + "");
-				else
-					saveMyBitmap(newBitmap, newBitmap + "");
+				Toast.makeText(getApplicationContext(),
+						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
+						.show();
 
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, OkActivity.class);
@@ -149,10 +220,9 @@ public class MainActivity extends Activity {
 		saveButton2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (icon != null)
-					saveMyBitmap(icon, icon + "");
-				else
-					saveMyBitmap(newBitmap, newBitmap + "");
+				Toast.makeText(getApplicationContext(),
+						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
+						.show();
 
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, OkActivity.class);
@@ -169,10 +239,10 @@ public class MainActivity extends Activity {
 				relativeLayout1.setVisibility(View.VISIBLE);
 				editText.setFocusable(true);
 
-				//seekBar.setPadding(32, 0, 32, 106);// 1080p是(48, 0, 48, 106)
+				// seekBar.setPadding(32, 0, 32, 106);// 1080p是(48, 0, 48, 106)
 			}
 		});
-		
+
 		wordButton2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -189,42 +259,47 @@ public class MainActivity extends Activity {
 		fontButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.e("aa", "xuanle");
-				AlertDialog builder = new AlertDialog.Builder(context)
-						.setTitle("选择字体")// 设置对话框标题
-						.setIcon(android.R.drawable.ic_dialog_info)// 设置对话框图标
-						.setSingleChoiceItems(
-								singleChoiceItems,
-								defaultSelectedIndex,
-								new android.content.DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										// TODO Auto-generated method stub
-										if (which == 0)
-											fontString = "font/Brand.ttf";
-										else if (which == 1)
-											fontString = "font/Digitrax.ttf";
-										else if (which == 2)
-											fontString = "font/fzyundong.ttf";
-										else if (which == 3)
-											fontString = "font/fzzongyi_GBK.ttf";
-										else if (which == 4)
-											fontString = "font/Kildor.ttf";
-										else if (which == 5)
-											fontString = "font/manteka.ttf";
-										else if (which == 6)
-											fontString = "font/Multicolore.ttf";
-										else if (which == 7)
-											fontString = "font/Neptune8.ttf";
-										else if (which == 8)
-											fontString = "font/Rose.ttf";
-										else if (which == 9)
-											fontString = "font/zaozigongfang.ttf";
-									}
-								}).setPositiveButton("确定", null)// 设置对话框[肯定]按钮
-						.setNegativeButton("取消", null)// 设置对话框[否定]按钮
-						.show();
+				/*
+				 * AlertDialog builder = new AlertDialog.Builder(context)
+				 * .setTitle("选择字体")// 设置对话框标题
+				 * .setIcon(android.R.drawable.ic_dialog_info)// 设置对话框图标
+				 * .setSingleChoiceItems( singleChoiceItems,
+				 * defaultSelectedIndex, new
+				 * android.content.DialogInterface.OnClickListener() {
+				 * 
+				 * @Override public void onClick(DialogInterface dialog, int
+				 * which) { // TODO Auto-generated method stub if (which == 0)
+				 * fontString = "font/Brand.ttf"; else if (which == 1)
+				 * fontString = "font/Digitrax.ttf"; else if (which == 2)
+				 * fontString = "font/fzyundong.ttf"; else if (which == 3)
+				 * fontString = "font/fzzongyi_GBK.ttf"; else if (which == 4)
+				 * fontString = "font/Kildor.ttf"; else if (which == 5)
+				 * fontString = "font/manteka.ttf"; else if (which == 6)
+				 * fontString = "font/Multicolore.ttf"; else if (which == 7)
+				 * fontString = "font/Neptune8.ttf"; else if (which == 8)
+				 * fontString = "font/Rose.ttf"; else if (which == 9) fontString
+				 * = "font/zaozigongfang.ttf"; } }).setPositiveButton("确定",
+				 * null)// 设置对话框[肯定]按钮 .setNegativeButton("取消", null)//
+				 * 设置对话框[否定]按钮 .show();
+				 */
+
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout2.setVisibility(View.VISIBLE);
+
+				drawNewBitmap(myImageView, str1);
+			}
+		});
+		
+		textsizeButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout3.setVisibility(View.VISIBLE);
+				
 				drawNewBitmap(myImageView, str1);
 			}
 		});
@@ -239,16 +314,46 @@ public class MainActivity extends Activity {
 
 	}
 
+	/* 设定ImageView的透明度渐显出来 */
+	//没用
+	private Runnable fadeInTask = new Runnable() {
+		public void run() {
+			if (a == true) {
+				intCounter = intCounter + 1;
+				myImageView.setAlpha(intCounter * 15);
+				if (intCounter < 10) {
+					mHandler.postDelayed(fadeInTask, 50);
+					a = false;
+				}
+			}
+		}
+	};
+
 	// 异步更新
 	class AsyncTaskThread extends AsyncTask<String, Integer, Bitmap> {
 
 		protected Bitmap doInBackground(Bitmap bitmap) {
 			Log.e("asd", "asdf");
 			// 改变模糊上限
-			stackBlurManager.process(progress0 * 2);
-			myImageView.setImageBitmap(stackBlurManager.returnBlurredImage());
-			newBitmap = stackBlurManager.returnBlurredImage();
+			// stackBlurManager.process(progress0 * 2);
+			// myImageView.setImageBitmap(stackBlurManager.returnBlurredImage());
+			// newBitmap = stackBlurManager.returnBlurredImage();
+			// return newBitmap;
+
+			Bitmap result0 = rsBlur(bitmap0, MainActivity.this, progress0 + 1);
+			Bitmap result = rsBlur(result0, MainActivity.this, progress0 + 1);
+			// Bitmap result1 = rsBlur(result, MainActivity.this, progress0 +
+			// 1);
+			// Bitmap result2 = rsBlur(result1, MainActivity.this, progress0 +
+			// 1);
+			// Bitmap result3 = rsBlur(result2, MainActivity.this, progress0 +
+			// 1);
+			myImageView.setImageBitmap(result);
+			newBitmap = result;
+			icon=newBitmap;
+
 			return newBitmap;
+
 		}
 
 		protected void onProgressUpdate(Integer... progress) {
@@ -256,14 +361,7 @@ public class MainActivity extends Activity {
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			if (result != null) {
-				Toast.makeText(MainActivity.this, "成功获取图片", Toast.LENGTH_LONG)
-						.show();
-				myImageView.setImageBitmap(result);
-			} else {
-				Toast.makeText(MainActivity.this, "获取图片失败", Toast.LENGTH_LONG)
-						.show();
-			}
+
 		}
 
 		protected void onPreExecute() {
@@ -280,6 +378,27 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			return null;
 		}
+	}
+
+	// 模糊算法
+	public static Bitmap rsBlur(Bitmap raw, Context context, int radius) {
+		RenderScript rs = RenderScript.create(context);
+		Allocation alloc = Allocation.createFromBitmap(rs, raw);
+		ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs,
+				alloc.getElement());
+		blur.setRadius(radius);
+		blur.setInput(alloc);
+
+		Bitmap result = Bitmap.createBitmap(raw.getWidth(), raw.getHeight(),
+				raw.getConfig());
+		Allocation outAlloc = Allocation.createFromBitmap(rs, result);
+		blur.forEach(outAlloc);
+		outAlloc.copyTo(result);
+		rs.destroy();
+		alloc.destroy();
+		outAlloc.destroy();
+		// raw.recycle();
+		return result;
 	}
 
 	// 图片上加文字
@@ -311,7 +430,7 @@ public class MainActivity extends Activity {
 				| Paint.DEV_KERN_TEXT_FLAG);// 设置画笔
 		textPaint.setTextAlign(Paint.Align.CENTER);// 中心
 		textPaint.setShadowLayer(10, 0, 6, R.color.myColor);// 设置阴影
-		textPaint.setTextSize(100.0f);// 字体大小
+		textPaint.setTextSize(textSize);// 字体大小
 
 		// 设置自带字体
 		AssetManager assetManager = getApplicationContext().getAssets();
@@ -436,7 +555,7 @@ public class MainActivity extends Activity {
 		try {
 			f.createNewFile();
 			fOut = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 10, fOut);// 把100调低
+			bitmap.compress(Bitmap.CompressFormat.PNG, 1, fOut);// 把100调低
 			fOut.flush();
 			fOut.close();
 		} catch (FileNotFoundException e) {

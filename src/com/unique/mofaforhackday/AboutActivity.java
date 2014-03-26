@@ -21,19 +21,5 @@ public class AboutActivity extends Activity{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
 		setContentView(R.layout.about_activity);
 		
-		imageButton=(ImageButton)findViewById(R.id.imageButton1);
-		
-		imageButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(AboutActivity.this, FirstActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		});
-		
 	}
 }
