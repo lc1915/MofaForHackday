@@ -6,27 +6,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.WallpaperManager;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -36,12 +31,17 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SlidingDrawer;
+import android.widget.SlidingDrawer.OnDrawerCloseListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
+import android.widget.Switch;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
@@ -52,28 +52,69 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 
 public class MainActivity extends Activity {
 
-	private int intCounter = 0;
+	private int intCounter = 0;// 设置imageview渐渐显示出来的一个参数，目前没有用
 	private boolean a = false;
 	private int textSize;
+
+	private RelativeLayout mainLayout;
+	private MyTextView textView;
+	private RelativeLayout.LayoutParams rl;
 
 	private ImageView myImageView;
 	private SeekBar seekBar;
 	private SeekBar textSeekBar;
 	private ImageButton saveButton;
 	private ImageButton saveButton2;
+	private ImageButton saveButton3;
+	private ImageButton saveButton4;
 	private ImageButton wordButton;
 	private ImageButton wordButton2;
 	private ImageButton fontButton;
+	private ImageButton colorButton;
+	private ImageButton shadowButton;
+	private ImageButton addtextButton;
+	private ImageButton addtextButton1;
+	private ImageButton addtextButton2;
+	private ImageButton addtextButton3;
+	private ImageButton addtextButton4;
 	private ImageButton haoButton;
+	private ImageButton haoButton1;
+	private ImageButton haoButton2;
+	private ImageButton haoButton3;
+	private ImageButton haoButton4;
 	private ImageButton textsizeButton;
-	private SlidingDrawer slidingDrawer;
+	private WrapSlidingDrawer wrapSlidingDrawer;
 	private EditText editText;
+	private EditText editText1;
+	private EditText editText2;
+	private EditText editText3;
+	private EditText editText4;
 	int progress0;
+	private ImageButton handleSelector;
+
+	private ImageButton fontInShadowButton;
+	private ImageButton shadowInFontButton;
+	private ImageButton textsizeInShadowButton;
+	private ImageButton shadowInTextsizeButton;
+
+	private Switch switch1;
+
+	private Button color1Button;
+	private Button color2Button;
+	private Button color3Button;
+	private Button color4Button;
+
+	private ImageButton font01Button;
+	private ImageButton font02Button;
+	private ImageButton font03Button;
+	private ImageButton font04Button;
 
 	private RelativeLayout relativeLayout0;
 	private RelativeLayout relativeLayout1;
-	private RelativeLayout relativeLayout2;
-	private RelativeLayout relativeLayout3;
+	private RelativeLayout relativeLayoutFont;
+	private RelativeLayout relativeLayoutTextsize;
+	private RelativeLayout relativeLayoutColor;
+	private RelativeLayout relativeLayoutShadow;
 
 	private Uri selectedImage;// 从sd卡中获取的图片的uri
 	private static int RESULT_LOAD_IMAGE = 0;// onActivityResult中requestCode的值
@@ -89,6 +130,7 @@ public class MainActivity extends Activity {
 	private StackBlurManager stackBlurManager;
 	Handler mHandler = new Handler();
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,33 +139,50 @@ public class MainActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.activity_main);
 
-		// this.mHandleView.performClick();
+		// this.mHandleView.performClick();//本来打算让handle开始为点击状态
 
-		myImageView = (ImageView) findViewById(R.id.imageView1);
-		myImageView.setOnTouchListener(touch);// 使图片可触摸
-		seekBar = (SeekBar) findViewById(R.id.seekBar1);
-		seekBar.setMax(24);
-		textSeekBar=(SeekBar)findViewById(R.id.seekBar_text);
-		textSeekBar.setMax(200);
-		editText = (EditText) findViewById(R.id.editText1);
-		saveButton = (ImageButton) findViewById(R.id.imageButton_ok);
-		saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
-		wordButton = (ImageButton) findViewById(R.id.imageButton_word);
-		wordButton2 = (ImageButton) findViewById(R.id.imageButton_word2);
-		fontButton = (ImageButton) findViewById(R.id.imageButton_font);
-		textsizeButton=(ImageButton)findViewById(R.id.imageButton_textsize);
-		haoButton = (ImageButton) findViewById(R.id.imageButton_hao);
+		mainLayout = (RelativeLayout) findViewById(R.id.main);
+		// textView = (MyTextView) findViewById(R.id.textView_touch);
+		textView = new MyTextView(this);
+		rl = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.MATCH_PARENT);
+		rl.setMargins(getWindowManager().getDefaultDisplay().getWidth() / 2,
+				getWindowManager().getDefaultDisplay().getHeight() / 2, 0, 0);
+		Log.i("width", getWindowManager().getDefaultDisplay().getWidth() / 2
+				+ "");
+		Log.i("height", getWindowManager().getDefaultDisplay().getHeight() / 2
+				+ "");
+		textView.setLayoutParams(rl);
+		mainLayout.addView(textView);
 
-		relativeLayout0 = (RelativeLayout) findViewById(R.id.relativeLayout0);
-		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
-		relativeLayout2 = (RelativeLayout) findViewById(R.id.relativeLayout2);
-		relativeLayout3 = (RelativeLayout) findViewById(R.id.relativeLayout3);
+		findViewById();
+
+		wrapSlidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
+			@SuppressLint("NewApi")
+			@Override
+			public void onDrawerOpened() {
+				// TODO Auto-generated method stub
+				handleSelector.setBackground(getResources().getDrawable(
+						R.drawable.mofa_down));
+			}
+		});
+
+		wrapSlidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
+			@SuppressLint("NewApi")
+			@Override
+			public void onDrawerClosed() {
+				// TODO Auto-generated method stub
+				handleSelector.setBackground(getResources().getDrawable(
+						R.drawable.mofa_up));
+			}
+		});
 
 		bitmap0 = CutPictureActivity.icon;
 		newBitmap = CutPictureActivity.icon;
 		icon = CutPictureActivity.icon;// 后来加的
-		
-		textSize=60;
+
+		textSize = 20;
 
 		myImageView.setImageBitmap(bitmap0);
 		stackBlurManager = new StackBlurManager(bitmap0);
@@ -132,8 +191,79 @@ public class MainActivity extends Activity {
 		fontString = "font/Brand.ttf";
 		str1 = "";
 
+		AssetManager assetManager = getApplicationContext().getAssets();
+		textView.setShadowLayer(10, 0, 4, R.color.myColor);// 设置阴影
+		textView.setTextSize(textSize);// 字体大小
+		textView.setTextColor(Color.WHITE);
+		textView.setTypeface(Typeface.createFromAsset(assetManager, fontString));
+
 		final Context context = this;
 
+		onClick();
+
+	}
+
+	private void findViewById() {
+		myImageView = (ImageView) findViewById(R.id.imageView1);
+		// myImageView.setOnTouchListener(touch);// 使图片可触摸
+		seekBar = (SeekBar) findViewById(R.id.seekBar1);
+		seekBar.setMax(24);
+		textSeekBar = (SeekBar) findViewById(R.id.seekBar_text);
+		textSeekBar.setMax(80);
+		editText = (EditText) findViewById(R.id.editText1);
+		editText1 = (EditText) findViewById(R.id.editText2);
+		editText2 = (EditText) findViewById(R.id.editText3);
+		editText3 = (EditText) findViewById(R.id.editText4);
+		editText4 = (EditText) findViewById(R.id.editText5);
+		saveButton = (ImageButton) findViewById(R.id.imageButton_ok);
+		saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
+		saveButton3 = (ImageButton) findViewById(R.id.imageButton_ok3);
+		saveButton4 = (ImageButton) findViewById(R.id.imageButton_ok4);
+		wordButton = (ImageButton) findViewById(R.id.imageButton_word);
+		wordButton2 = (ImageButton) findViewById(R.id.imageButton_word2);
+		fontButton = (ImageButton) findViewById(R.id.imageButton_font);
+		textsizeButton = (ImageButton) findViewById(R.id.imageButton_textsize);
+		colorButton = (ImageButton) findViewById(R.id.imageButton_color);
+		shadowButton = (ImageButton) findViewById(R.id.imageButton_shadow);
+		addtextButton = (ImageButton) findViewById(R.id.imageButton_addtext);
+		addtextButton1 = (ImageButton) findViewById(R.id.imageButton_addtext1);
+		addtextButton2 = (ImageButton) findViewById(R.id.imageButton_addtext2);
+		addtextButton3 = (ImageButton) findViewById(R.id.imageButton_addtext3);
+		addtextButton4 = (ImageButton) findViewById(R.id.imageButton_addtext4);
+		haoButton = (ImageButton) findViewById(R.id.imageButton_hao);
+		haoButton1 = (ImageButton) findViewById(R.id.imageButton_hao2);
+		haoButton2 = (ImageButton) findViewById(R.id.imageButton_hao3);
+		haoButton3 = (ImageButton) findViewById(R.id.imageButton_hao4);
+		haoButton4 = (ImageButton) findViewById(R.id.imageButton_hao5);
+		switch1 = (Switch) findViewById(R.id.switch1);
+		switch1.setChecked(true);
+		handleSelector = (ImageButton) findViewById(R.id.handle_selector);
+		wrapSlidingDrawer=(WrapSlidingDrawer)findViewById(R.id.slidingDrawer1);
+
+		fontInShadowButton = (ImageButton) findViewById(R.id.imageButton_fontInShadow);
+		shadowInFontButton = (ImageButton) findViewById(R.id.imageButton_shadowInFont);
+		textsizeInShadowButton = (ImageButton) findViewById(R.id.imageButton_textsizeInShadow);
+		shadowInTextsizeButton = (ImageButton) findViewById(R.id.imageButton_shadowInTextsize);
+
+		color1Button = (Button) findViewById(R.id.imageButton_color1);
+		color2Button = (Button) findViewById(R.id.imageButton_color2);
+		color3Button = (Button) findViewById(R.id.imageButton_color3);
+		color4Button = (Button) findViewById(R.id.imageButton_color4);
+
+		font01Button = (ImageButton) findViewById(R.id.imageButton_font01);
+		font02Button = (ImageButton) findViewById(R.id.imageButton_font02);
+		font03Button = (ImageButton) findViewById(R.id.imageButton_font03);
+		font04Button = (ImageButton) findViewById(R.id.imageButton_font04);
+
+		relativeLayout0 = (RelativeLayout) findViewById(R.id.relativeLayout0);
+		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
+		relativeLayoutFont = (RelativeLayout) findViewById(R.id.relativeLayout_font);
+		relativeLayoutTextsize = (RelativeLayout) findViewById(R.id.relativeLayout_textsize);
+		relativeLayoutColor = (RelativeLayout) findViewById(R.id.relativeLayout_color);
+		relativeLayoutShadow = (RelativeLayout) findViewById(R.id.relativeLayout_shadow);
+	};
+
+	private void onClick() {
 		// 监听 拖动条
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
@@ -145,12 +275,12 @@ public class MainActivity extends Activity {
 				AsyncTaskThread thread = new AsyncTaskThread();
 				thread.doInBackground(bitmap0);
 
-				//mHandler.post(fadeInTask);
+				// mHandler.post(fadeInTask);
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				//mHandler.removeCallbacks(fadeInTask);
+				// mHandler.removeCallbacks(fadeInTask);
 			}
 
 			@Override
@@ -177,27 +307,42 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		
+
 		textSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			
+
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
-				textSize=progress+50;
-				drawNewBitmap(myImageView, str1);
+				textSize = progress + 20;
+				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				textView.setTextSize(textSize);// 字体大小
+			}
+		});
+
+		switch1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (isChecked)
+					textView.setShadowLayer(10, 0, 4, R.color.myColor);// 设置无阴影
+				else
+					textView.setShadowLayer(0, 0, 0, R.color.myColor);// 设置阴影
 			}
 		});
 
@@ -209,6 +354,16 @@ public class MainActivity extends Activity {
 						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
 						.show();
 
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
+				icon = convertViewToBitmap(mainLayout);
+
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, OkActivity.class);
 				startActivity(intent);
@@ -216,13 +371,63 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		// 监听 保存button2
 		saveButton2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(),
 						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
 						.show();
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
+				icon = convertViewToBitmap(mainLayout);
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, OkActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+
+		saveButton3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(),
+						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
+						.show();
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, OkActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+
+		saveButton4.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(),
+						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
+						.show();
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
 
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, OkActivity.class);
@@ -259,48 +464,101 @@ public class MainActivity extends Activity {
 		fontButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*
-				 * AlertDialog builder = new AlertDialog.Builder(context)
-				 * .setTitle("选择字体")// 设置对话框标题
-				 * .setIcon(android.R.drawable.ic_dialog_info)// 设置对话框图标
-				 * .setSingleChoiceItems( singleChoiceItems,
-				 * defaultSelectedIndex, new
-				 * android.content.DialogInterface.OnClickListener() {
-				 * 
-				 * @Override public void onClick(DialogInterface dialog, int
-				 * which) { // TODO Auto-generated method stub if (which == 0)
-				 * fontString = "font/Brand.ttf"; else if (which == 1)
-				 * fontString = "font/Digitrax.ttf"; else if (which == 2)
-				 * fontString = "font/fzyundong.ttf"; else if (which == 3)
-				 * fontString = "font/fzzongyi_GBK.ttf"; else if (which == 4)
-				 * fontString = "font/Kildor.ttf"; else if (which == 5)
-				 * fontString = "font/manteka.ttf"; else if (which == 6)
-				 * fontString = "font/Multicolore.ttf"; else if (which == 7)
-				 * fontString = "font/Neptune8.ttf"; else if (which == 8)
-				 * fontString = "font/Rose.ttf"; else if (which == 9) fontString
-				 * = "font/zaozigongfang.ttf"; } }).setPositiveButton("确定",
-				 * null)// 设置对话框[肯定]按钮 .setNegativeButton("取消", null)//
-				 * 设置对话框[否定]按钮 .show();
-				 */
 
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout0.setVisibility(View.GONE);
-				relativeLayout2.setVisibility(View.VISIBLE);
+				relativeLayoutFont.setVisibility(View.VISIBLE);
 
-				drawNewBitmap(myImageView, str1);
+				// drawNewBitmap(myImageView, str1);
 			}
 		});
-		
+
 		textsizeButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout0.setVisibility(View.GONE);
-				relativeLayout3.setVisibility(View.VISIBLE);
-				
-				drawNewBitmap(myImageView, str1);
+				relativeLayoutTextsize.setVisibility(View.VISIBLE);
+
+				// drawNewBitmap(myImageView, str1);
+			}
+		});
+
+		colorButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayoutColor.setVisibility(View.VISIBLE);
+
+				// drawNewBitmap(myImageView, str1);
+			}
+		});
+
+		shadowButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.VISIBLE);
+
+				// drawNewBitmap(myImageView, str1);
+			}
+		});
+
+		addtextButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				str1 = editText.getText().toString();
+				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				textView.setText(str1);
+			}
+		});
+
+		addtextButton1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				str1 = editText1.getText().toString();
+				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				textView.setText(str1);
+			}
+		});
+
+		addtextButton2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				str1 = editText2.getText().toString();
+				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				textView.setText(str1);
+			}
+		});
+
+		addtextButton3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				str1 = editText3.getText().toString();
+				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				textView.setText(str1);
+			}
+		});
+
+		addtextButton4.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				str1 = editText4.getText().toString();
+				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				textView.setText(str1);
 			}
 		});
 
@@ -309,13 +567,157 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				if (icon != null)
 					newBitmap = icon;
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
+				myImageView.setImageBitmap(icon);
 			}
 		});
 
-	}
+		haoButton1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (icon != null)
+					newBitmap = icon;
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
+				myImageView.setImageBitmap(icon);
+			}
+		});
+
+		haoButton2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (icon != null)
+					newBitmap = icon;
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
+				myImageView.setImageBitmap(icon);
+			}
+		});
+
+		haoButton3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (icon != null)
+					newBitmap = icon;
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
+				myImageView.setImageBitmap(icon);
+			}
+		});
+
+		haoButton4.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (icon != null)
+					newBitmap = icon;
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
+						MyTextView.b);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+				icon = convertViewToBitmap(mainLayout);
+				myImageView.setImageBitmap(icon);
+			}
+		});
+
+		color1Button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				textView.setTextColor(getResources().getColor(R.color.color1));
+			}
+		});
+
+		color2Button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				textView.setTextColor(getResources().getColor(R.color.color2));
+			}
+		});
+
+		color3Button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				textView.setTextColor(getResources().getColor(R.color.color3));
+			}
+		});
+
+		color4Button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				textView.setTextColor(getResources().getColor(R.color.color4));
+			}
+		});
+
+		fontInShadowButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.GONE);
+				relativeLayoutFont.setVisibility(View.VISIBLE);
+			}
+		});
+
+		shadowInFontButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayoutFont.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.VISIBLE);
+			}
+		});
+
+		textsizeInShadowButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.GONE);
+				relativeLayoutTextsize.setVisibility(View.VISIBLE);
+			}
+		});
+
+		shadowInTextsizeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout0.setVisibility(View.GONE);
+				relativeLayoutTextsize.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.VISIBLE);
+			}
+		});
+	};
 
 	/* 设定ImageView的透明度渐显出来 */
-	//没用
+	// 没用
 	private Runnable fadeInTask = new Runnable() {
 		public void run() {
 			if (a == true) {
@@ -328,6 +730,38 @@ public class MainActivity extends Activity {
 			}
 		}
 	};
+
+	public static Bitmap convertViewToBitmap(View v) {
+		/*
+		 * view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+		 * MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+		 * view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+		 * view.buildDrawingCache(); Bitmap bitmap = view.getDrawingCache();
+		 * 
+		 * return bitmap;
+		 */
+		v.clearFocus();
+		v.setPressed(false);
+		boolean willNotCache = v.willNotCacheDrawing();
+		v.setWillNotCacheDrawing(false);
+		// Reset the drawing cache background color to fully transparent
+		// for the duration of this operation
+		int color = v.getDrawingCacheBackgroundColor();
+		v.setDrawingCacheBackgroundColor(0);
+		if (color != 0) {
+			v.destroyDrawingCache();
+		}
+		v.buildDrawingCache();
+		Bitmap cacheBitmap = v.getDrawingCache();
+		if (cacheBitmap == null) {
+			return null;
+		}
+		Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+		v.destroyDrawingCache();
+		v.setWillNotCacheDrawing(willNotCache);
+		v.setDrawingCacheBackgroundColor(color);
+		return bitmap;
+	}
 
 	// 异步更新
 	class AsyncTaskThread extends AsyncTask<String, Integer, Bitmap> {
@@ -342,15 +776,12 @@ public class MainActivity extends Activity {
 
 			Bitmap result0 = rsBlur(bitmap0, MainActivity.this, progress0 + 1);
 			Bitmap result = rsBlur(result0, MainActivity.this, progress0 + 1);
-			// Bitmap result1 = rsBlur(result, MainActivity.this, progress0 +
-			// 1);
-			// Bitmap result2 = rsBlur(result1, MainActivity.this, progress0 +
-			// 1);
-			// Bitmap result3 = rsBlur(result2, MainActivity.this, progress0 +
-			// 1);
+			Bitmap result1 = rsBlur(result, MainActivity.this, progress0 + 1);
+			Bitmap result2 = rsBlur(result1, MainActivity.this, progress0 + 1);
+			Bitmap result3 = rsBlur(result2, MainActivity.this, progress0 + 1);
 			myImageView.setImageBitmap(result);
-			newBitmap = result;
-			icon=newBitmap;
+			newBitmap = result3;
+			icon = newBitmap;
 
 			return newBitmap;
 

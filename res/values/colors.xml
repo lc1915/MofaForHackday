@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>   
 <resources>   
-<color name="myColor">#2e2f2f</color>   
+<color name="myColor">#444545</color>   
+<color name="color1">#000000</color>   
+<color name="color2">#ffffff</color>   
+<color name="color3">#abcdef</color>   
+<color name="color4">#123456</color>   
 </resources> 
