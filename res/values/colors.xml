@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>   
 <resources>   
 <color name="myColor">#444545</color>   
-<color name="color1">#000000</color>   
-<color name="color2">#ffffff</color>   
-<color name="color3">#abcdef</color>   
-<color name="color4">#123456</color>   
+<color name="color1">#ffffff</color>   
+<color name="color2">#959595</color>   
+<color name="color3">#535353</color>   
+<color name="color4">#000000</color>   
+<color name="color5">#eb6877</color>   
+<color name="color6">#00b7ee</color>   
+<color name="color7">#80c269</color>   
+<color name="color8">#ea68a2</color>   
+<color name="color9">#7ecef4</color>   
+<color name="color10">#85a6b0</color>   
+<color name="color11">#fa4358</color>   
+<color name="color12">#9966CC</color>   
+<color name="color13">#00FF80</color>   
+<color name="color14">#EEE8AB</color>   
+<color name="color15">#BDB76A</color>   
+<color name="color16">#00755E</color>   
+<color name="color17">#FD5B78</color>   
+<color name="color18">#FE4C40</color>   
+<color name="color19">#ACE1AF</color>   
+<color name="color20">#EEE8AA</color>   
+<color name="color21">#D9D6CF</color>   
+<color name="color22">#426ab3</color>   
+<color name="color23">#f3715c</color>   
+<color name="color24">#228fbd</color>   
+<color name="color25">#7bbfea</color>   
+<color name="color26">#ca8687</color>   
+<color name="color27">#b7ba6b</color>   
+<color name="color28">#70a19f</color>   
+<color name="color29">#fedcbd</color>   
+<color name="color30">#00EBC0</color>   
+<color name="color31">#4C556E</color>   
+<color name="color32">#ADA0A5</color>   
+<color name="color33">#06B9D1</color>   
+<color name="color34">#9C5657</color>   
+<color name="color35">#BE7591</color>      
 </resources> 
