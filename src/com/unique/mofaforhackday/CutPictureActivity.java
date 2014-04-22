@@ -3,6 +3,7 @@ package com.unique.mofaforhackday;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,12 +23,14 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
 
 public class CutPictureActivity extends Activity {
 
 	private ImageView imageView;
 	private ImageButton imageButton;
+	private TextView textView;
 	private Bitmap bitmap0;
 	static Bitmap icon;
 	static int width0;
@@ -47,9 +50,12 @@ public class CutPictureActivity extends Activity {
 		imageButton = (ImageButton) findViewById(R.id.imageButton1);
 		imageView = (ImageView) findViewById(R.id.imageView1);
 		imageView.setOnTouchListener(new TouchListener());
-
-		bitmap0 = FirstActivity.bitmap;
-		icon = FirstActivity.bitmap;
+		textView=(TextView)findViewById(R.id.textView1);
+		textView.setTextColor(Color.WHITE);
+		textView.setShadowLayer(10, 0, 4, R.color.myColor);
+		
+		bitmap0 = ViewpagerActivity.bitmap;
+		icon = ViewpagerActivity.bitmap;
 
 		// 图片居中显示
 		width = getWindowManager().getDefaultDisplay().getWidth() / 2

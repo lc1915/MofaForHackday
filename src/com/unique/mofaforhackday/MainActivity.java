@@ -7,21 +7,28 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -41,6 +48,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SlidingDrawer;
+import android.widget.ToggleButton;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.Switch;
@@ -52,27 +60,28 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class MainActivity extends Activity {
 
 	private int intCounter = 0;// 设置imageview渐渐显示出来的一个参数，目前没有用
 	private boolean a = false;
 	private int textSize;
+	private boolean gray = false;
 
 	private RelativeLayout mainLayout;
 	private MyTextView textView;
 	private RelativeLayout.LayoutParams rl;
 
+	private ImageButton mohuButton;
+	private ImageButton wenziButton;
+	private ImageButton quseButton;
+
 	private ImageView myImageView;
 	private SeekBar seekBar;
 	private SeekBar textSeekBar;
+	private SeekBar tmdSeekBar;
 	private ImageButton saveButton;
-	private ImageButton saveButton2;
-	private ImageButton saveButton3;
-	private ImageButton saveButton4;
-	private ImageButton saveButton5;
-	private ImageButton saveButton6;
-	private ImageButton wordButton;
-	private ImageButton wordButton2;
+	private ImageButton quxiaoButton;
 	private ImageButton fontButton;
 	private ImageButton colorButton;
 	private ImageButton shadowButton;
@@ -96,6 +105,9 @@ public class MainActivity extends Activity {
 	int progress0;
 	private ImageButton handleSelector;
 
+	private ImageButton tmdButton;
+	private ImageButton tmdInFontButton;
+
 	private ImageButton fontInShadowButton;
 	private ImageButton textsizeInShadowButton;
 	private ImageButton colorInShadowButton;
@@ -113,8 +125,8 @@ public class MainActivity extends Activity {
 	private ImageButton textsizeInColorButton;
 	private ImageButton fontInColorButton;
 
-	private Switch switch1;
-	private Switch switch_font;
+	private ToggleButton switch1;
+	private ToggleButton switch_font;
 
 	private Button color1Button;
 	private Button color2Button;
@@ -182,18 +194,19 @@ public class MainActivity extends Activity {
 	private ImageButton font28Button;
 	private ImageButton font29Button;
 	private ImageButton font30Button;
-	
+
 	private ImageButton miaowuButton;
 	private ImageButton zhiyiButton;
 	private ImageButton changmeiButton;
 	private ImageButton daofengButton;
 	private ImageButton tianniuButton;
 
-	private RelativeLayout relativeLayout0;
+	private RelativeLayout relativeLayout01;
 	private RelativeLayout relativeLayout1;
 	private RelativeLayout relativeLayoutmore;
 	private RelativeLayout relativeLayoutFont;
 	private RelativeLayout relativeLayoutTextsize;
+	private RelativeLayout relativeLayoutTmd;
 	private HorizontalScrollView relativeLayoutColor;
 	private RelativeLayout relativeLayoutShadow;
 
@@ -202,6 +215,7 @@ public class MainActivity extends Activity {
 
 	private Uri selectedImage;// 从sd卡中获取的图片的uri
 	private static int RESULT_LOAD_IMAGE = 0;// onActivityResult中requestCode的值
+	private Bitmap firstBitmap;
 	static Bitmap bitmap0;
 	static Bitmap newBitmap;
 	static Bitmap icon;
@@ -262,11 +276,12 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		firstBitmap = CutPictureActivity.icon;
 		bitmap0 = CutPictureActivity.icon;
 		newBitmap = CutPictureActivity.icon;
 		icon = CutPictureActivity.icon;// 后来加的
 
-		textSize = 20;
+		textSize = 60;
 
 		myImageView.setImageBitmap(bitmap0);
 		stackBlurManager = new StackBlurManager(bitmap0);
@@ -288,59 +303,83 @@ public class MainActivity extends Activity {
 	}
 
 	private void findViewById() {
+		mohuButton = (ImageButton) findViewById(R.id.mohu);
+		wenziButton = (ImageButton) findViewById(R.id.wenzi);
+		quseButton = (ImageButton) findViewById(R.id.quse);
+
 		myImageView = (ImageView) findViewById(R.id.imageView1);
 		// myImageView.setOnTouchListener(touch);// 使图片可触摸
 		seekBar = (SeekBar) findViewById(R.id.seekBar1);
 		seekBar.setMax(24);
 		textSeekBar = (SeekBar) findViewById(R.id.seekBar_text);
 		textSeekBar.setMax(80);
+		textSeekBar.setProgress(40);
+		tmdSeekBar = (SeekBar) findViewById(R.id.seekBartmd);
+		tmdSeekBar.setMax(245);
+		tmdSeekBar.setProgress(245);
 		editText = (EditText) findViewById(R.id.editText1);
 		editText1 = (EditText) findViewById(R.id.editText2);
-		//editText2 = (EditText) findViewById(R.id.editText3);
-		//editText3 = (EditText) findViewById(R.id.editText4);
-		//editText4 = (EditText) findViewById(R.id.editText5);
-		saveButton = (ImageButton) findViewById(R.id.imageButton_ok);
-		saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
-		saveButton3 = (ImageButton) findViewById(R.id.imageButton_ok3);
-		//saveButton4 = (ImageButton) findViewById(R.id.imageButton_ok4);
-		//saveButton5 = (ImageButton) findViewById(R.id.imageButton_ok5);
-		//saveButton6 = (ImageButton) findViewById(R.id.imageButton_ok6);
-		wordButton = (ImageButton) findViewById(R.id.imageButton_word);
-		wordButton2 = (ImageButton) findViewById(R.id.imageButton_word2);
+		// editText2 = (EditText) findViewById(R.id.editText3);
+		// editText3 = (EditText) findViewById(R.id.editText4);
+		// editText4 = (EditText) findViewById(R.id.editText5);
+		saveButton = (ImageButton) findViewById(R.id.save);
+		quxiaoButton = (ImageButton) findViewById(R.id.quxiao);
+		// saveButton2 = (ImageButton) findViewById(R.id.imageButton_ok2);
+		// saveButton3 = (ImageButton) findViewById(R.id.imageButton_ok3);
+		// saveButton4 = (ImageButton) findViewById(R.id.imageButton_ok4);
+		// saveButton5 = (ImageButton) findViewById(R.id.imageButton_ok5);
+		// saveButton6 = (ImageButton) findViewById(R.id.imageButton_ok6);
+		// wordButton = (ImageButton) findViewById(R.id.imageButton_word);
+		// wordButton2 = (ImageButton) findViewById(R.id.imageButton_word2);
 		fontButton = (ImageButton) findViewById(R.id.imageButton_font);
 		textsizeButton = (ImageButton) findViewById(R.id.imageButton_textsize);
 		colorButton = (ImageButton) findViewById(R.id.imageButton_color);
 		shadowButton = (ImageButton) findViewById(R.id.imageButton_shadow);
 		addtextButton = (ImageButton) findViewById(R.id.imageButton_addtext);
 		addtextButton1 = (ImageButton) findViewById(R.id.imageButton_addtext1);
-		//addtextButton2 = (ImageButton) findViewById(R.id.imageButton_addtext2);
-		//addtextButton3 = (ImageButton) findViewById(R.id.imageButton_addtext3);
-		//addtextButton4 = (ImageButton) findViewById(R.id.imageButton_addtext4);
+		// addtextButton2 = (ImageButton)
+		// findViewById(R.id.imageButton_addtext2);
+		// addtextButton3 = (ImageButton)
+		// findViewById(R.id.imageButton_addtext3);
+		// addtextButton4 = (ImageButton)
+		// findViewById(R.id.imageButton_addtext4);
 		haoButton = (ImageButton) findViewById(R.id.imageButton_hao);
 		haoButton1 = (ImageButton) findViewById(R.id.imageButton_hao2);
-		//haoButton2 = (ImageButton) findViewById(R.id.imageButton_hao3);
-		//haoButton3 = (ImageButton) findViewById(R.id.imageButton_hao4);
-		//haoButton4 = (ImageButton) findViewById(R.id.imageButton_hao5);
-		switch1 = (Switch) findViewById(R.id.switch1);
+		// haoButton2 = (ImageButton) findViewById(R.id.imageButton_hao3);
+		// haoButton3 = (ImageButton) findViewById(R.id.imageButton_hao4);
+		// haoButton4 = (ImageButton) findViewById(R.id.imageButton_hao5);
+		switch1 = (ToggleButton) findViewById(R.id.switch1);
 		switch1.setChecked(true);
-		switch_font = (Switch) findViewById(R.id.switch_font);
+		switch_font = (ToggleButton) findViewById(R.id.switch_font);
 		switch_font.setChecked(true);
 		handleSelector = (ImageButton) findViewById(R.id.handle_selector);
 		wrapSlidingDrawer = (WrapSlidingDrawer) findViewById(R.id.slidingDrawer1);
 
-		//fontInShadowButton = (ImageButton) findViewById(R.id.imageButton_fontInShadow);
+		tmdButton = (ImageButton) findViewById(R.id.imageButton_tmd);
+		tmdInFontButton = (ImageButton) findViewById(R.id.imageButton_tmdInFont);
+
+		// fontInShadowButton = (ImageButton)
+		// findViewById(R.id.imageButton_fontInShadow);
 		shadowInFontButton = (ImageButton) findViewById(R.id.imageButton_shadowInFont);
-		//textsizeInShadowButton = (ImageButton) findViewById(R.id.imageButton_textsizeInShadow);
-		//shadowInTextsizeButton = (ImageButton) findViewById(R.id.imageButton_shadowInTextsize);
-		//shadowInColorButton = (ImageButton) findViewById(R.id.imageButton_shadowInColor);
-		//textsizeInColorButton = (ImageButton) findViewById(R.id.imageButton_textsizeInColor);
-		//colorInShadowButton = (ImageButton) findViewById(R.id.imageButton_colorInShadow);
-		//colorInTextsizeButton = (ImageButton) findViewById(R.id.imageButton_colorInTextsize);
+		// textsizeInShadowButton = (ImageButton)
+		// findViewById(R.id.imageButton_textsizeInShadow);
+		// shadowInTextsizeButton = (ImageButton)
+		// findViewById(R.id.imageButton_shadowInTextsize);
+		// shadowInColorButton = (ImageButton)
+		// findViewById(R.id.imageButton_shadowInColor);
+		// textsizeInColorButton = (ImageButton)
+		// findViewById(R.id.imageButton_textsizeInColor);
+		// colorInShadowButton = (ImageButton)
+		// findViewById(R.id.imageButton_colorInShadow);
+		// colorInTextsizeButton = (ImageButton)
+		// findViewById(R.id.imageButton_colorInTextsize);
 		textsizeInFontButton = (ImageButton) findViewById(R.id.imageButton_textsizeInFont);
 		colorInFontButton = (ImageButton) findViewById(R.id.imageButton_colorInFont);
-		fontInFontButton=(ImageButton)findViewById(R.id.imageButton_fontInFont);
-		//fontInTextsizeButton = (ImageButton) findViewById(R.id.imageButton_fontInTextsize);
-		//fontInColorButton = (ImageButton) findViewById(R.id.imageButton_fontInColor);
+		fontInFontButton = (ImageButton) findViewById(R.id.imageButton_fontInFont);
+		// fontInTextsizeButton = (ImageButton)
+		// findViewById(R.id.imageButton_fontInTextsize);
+		// fontInColorButton = (ImageButton)
+		// findViewById(R.id.imageButton_fontInColor);
 
 		color1Button = (Button) findViewById(R.id.imageButton_color1);
 		color2Button = (Button) findViewById(R.id.imageButton_color2);
@@ -408,18 +447,19 @@ public class MainActivity extends Activity {
 		font28Button = (ImageButton) findViewById(R.id.imageButton_font28);
 		font29Button = (ImageButton) findViewById(R.id.imageButton_font29);
 		font30Button = (ImageButton) findViewById(R.id.imageButton_font30);
-		
-		miaowuButton=(ImageButton)findViewById(R.id.imageButton_miaowu);
-		zhiyiButton=(ImageButton)findViewById(R.id.imageButton_zhiyi);
-		changmeiButton=(ImageButton)findViewById(R.id.imageButton_changmei);
-		daofengButton=(ImageButton)findViewById(R.id.imageButton_daofeng);
-		tianniuButton=(ImageButton)findViewById(R.id.imageButton_tianniu);
 
-		relativeLayout0 = (RelativeLayout) findViewById(R.id.relativeLayout0);
+		miaowuButton = (ImageButton) findViewById(R.id.imageButton_miaowu);
+		zhiyiButton = (ImageButton) findViewById(R.id.imageButton_zhiyi);
+		changmeiButton = (ImageButton) findViewById(R.id.imageButton_changmei);
+		daofengButton = (ImageButton) findViewById(R.id.imageButton_daofeng);
+		tianniuButton = (ImageButton) findViewById(R.id.imageButton_tianniu);
+
+		relativeLayout01 = (RelativeLayout) findViewById(R.id.relativeLayout01);
 		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
-		relativeLayoutmore=(RelativeLayout)findViewById(R.id.relativeLayout_more);
+		relativeLayoutmore = (RelativeLayout) findViewById(R.id.relativeLayout_more);
 		relativeLayoutFont = (RelativeLayout) findViewById(R.id.relativeLayout_font);
 		relativeLayoutTextsize = (RelativeLayout) findViewById(R.id.relativeLayout_textsize);
+		relativeLayoutTmd = (RelativeLayout) findViewById(R.id.relativeLayout_tmd);
 		relativeLayoutColor = (HorizontalScrollView) findViewById(R.id.relativeLayout_color);
 		relativeLayoutShadow = (RelativeLayout) findViewById(R.id.relativeLayout_shadow);
 
@@ -439,6 +479,9 @@ public class MainActivity extends Activity {
 				AsyncTaskThread thread = new AsyncTaskThread();
 				thread.doInBackground(bitmap0);
 
+				if (progress0 == 0 || progress0 == 1)
+					myImageView.setImageBitmap(firstBitmap);
+
 				// mHandler.post(fadeInTask);
 			}
 
@@ -451,6 +494,8 @@ public class MainActivity extends Activity {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				progress0 = progress;
+
+				Log.e("progress", progress + "");
 
 				/*
 				 * if (progress0 == 3 | progress0 == 6 | progress0 == 9 |
@@ -483,7 +528,18 @@ public class MainActivity extends Activity {
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
+				mainLayout.removeView(textView);
 
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 			}
 
 			@Override
@@ -491,18 +547,55 @@ public class MainActivity extends Activity {
 					boolean fromUser) {
 				// TODO Auto-generated method stub
 				textSize = progress + 20;
-				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
+				textView.layout(MyTextView.l, MyTextView.t, 0, 0);
 				textView.setTextSize(textSize);// 字体大小
 			}
 		});
 
-		switch1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		tmdSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO Auto-generated method stub
+				int i = textView.getCurrentTextColor();
+
+				String ii = Integer.toHexString(i);
+				Log.e("int ii", "ii=" + ii);
+				String subs = ii.substring((ii.length() - 6), ii.length());
+				int progressa = progress + 10;
+
+				String result = "";
+				result = Integer.toHexString(progressa);
+
+				if (result.length() % 2 == 1)
+					result = "0" + result;
+
+				String iString = "0x" + result + subs;
+
+				Long longStr = Long.parseLong(iString.substring(2), 16);
+				int ss = new Integer(longStr.intValue());
+
+				textView.setTextColor(ss);
+			}
+		});
+
+		switch1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				// TODO Auto-generated method stub
 				if (isChecked)
 					textView.setShadowLayer(10, 0, 4, R.color.myColor);// 设置无阴影
 				else
@@ -525,6 +618,77 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
+		
+		editText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mainLayout.removeView(textView);
+
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+			}
+		});
+		
+		editText1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mainLayout.removeView(textView);
+
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+			}
+		});
+
+		mohuButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.GONE);
+			}
+		});
+
+		wenziButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout01.setVisibility(View.GONE);
+				relativeLayout1.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.GONE);
+			}
+		});
+
+		quseButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (gray == false) {
+					Bitmap icon0 = toGrayscale(icon);
+					myImageView.setImageBitmap(icon0);
+					gray = true;
+				} else {
+					myImageView.setImageBitmap(icon);
+					gray = false;
+				}
+
+			}
+		});
 
 		// 监听 保存button
 		saveButton.setOnClickListener(new OnClickListener() {
@@ -536,8 +700,7 @@ public class MainActivity extends Activity {
 
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -551,70 +714,48 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		saveButton2.setOnClickListener(new OnClickListener() {
+		quxiaoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(),
-						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
-						.show();
-				mainLayout.removeView(textView);
+				// TODO Auto-generated method stub
+				new AlertDialog.Builder(MainActivity.this)
+						.setIcon(R.drawable.ic_launcher)
+						.setTitle("Mofa")
+						.setMessage("你确定退出图片编辑吗？")
+						.setPositiveButton("是，直接回到主界面",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										Intent intent = new Intent();
+										intent.setClass(MainActivity.this,
+												FirstActivity.class);
+										startActivity(intent);
+										finish();
+									}
+								})
+						.setNegativeButton("不，我还想继续编辑",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
 
-				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
-				textView.setLayoutParams(rl);
-				mainLayout.addView(textView);
-
-				icon = convertViewToBitmap(mainLayout);
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, OkActivity.class);
-				startActivity(intent);
-				finish();
+									}
+								}).show();
 			}
 		});
-
-		saveButton3.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(),
-						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
-						.show();
-				mainLayout.removeView(textView);
-
-				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
-				textView.setLayoutParams(rl);
-				mainLayout.addView(textView);
-				icon = convertViewToBitmap(mainLayout);
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, OkActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		});
-
-		
 
 		// 监听 输入文字button
-		wordButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				relativeLayout0.setVisibility(View.GONE);
-				relativeLayout1.setVisibility(View.VISIBLE);
-				editText.setFocusable(true);
-
-				// seekBar.setPadding(32, 0, 32, 106);// 1080p是(48, 0, 48, 106)
-			}
-		});
-
-		wordButton2.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.VISIBLE);
-			}
-		});
+		/*
+		 * wordButton.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) {
+		 * relativeLayout01.setVisibility(View.GONE);
+		 * relativeLayout1.setVisibility(View.VISIBLE);
+		 * editText.setFocusable(true);
+		 * 
+		 * // seekBar.setPadding(32, 0, 32, 106);// 1080p是(48, 0, 48, 106) } });
+		 */
 
 		final String[] singleChoiceItems = { "Brand", "Digetrax", "方正韵动特黑简体",
 				"方正综艺", "Kildor", "manteka", "Multicolore", "Meptune8", "Rose",
@@ -626,7 +767,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutFont.setVisibility(View.VISIBLE);
 
@@ -640,11 +781,21 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutTextsize.setVisibility(View.VISIBLE);
 
 				// drawNewBitmap(myImageView, str1);
+			}
+		});
+
+		tmdButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
+				relativeLayoutTmd.setVisibility(View.VISIBLE);
 			}
 		});
 
@@ -654,7 +805,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutColor.setVisibility(View.VISIBLE);
 
@@ -668,7 +819,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutShadow.setVisibility(View.VISIBLE);
 
@@ -680,8 +831,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				str1 = editText.getText().toString();
-				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
+				textView.layout(MyTextView.l, MyTextView.t, 0, 0);
 				textView.setText(str1);
 			}
 		});
@@ -690,8 +840,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				str1 = editText1.getText().toString();
-				textView.layout(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
+				textView.layout(MyTextView.l, MyTextView.t, 0, 0);
 				textView.setText(str1);
 			}
 		});
@@ -703,8 +852,7 @@ public class MainActivity extends Activity {
 					newBitmap = icon;
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -721,8 +869,7 @@ public class MainActivity extends Activity {
 					newBitmap = icon;
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, MyTextView.r,
-						MyTextView.b);
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -731,8 +878,6 @@ public class MainActivity extends Activity {
 				myImageView.setImageBitmap(icon);
 			}
 		});
-
-		
 
 		color1Button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -975,6 +1120,12 @@ public class MainActivity extends Activity {
 		font01Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f1.ttf";
@@ -987,6 +1138,12 @@ public class MainActivity extends Activity {
 		font02Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f2.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -996,6 +1153,12 @@ public class MainActivity extends Activity {
 		font03Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f3.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1005,6 +1168,12 @@ public class MainActivity extends Activity {
 		font04Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f4.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1014,6 +1183,12 @@ public class MainActivity extends Activity {
 		font05Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f5.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1024,6 +1199,12 @@ public class MainActivity extends Activity {
 		font06Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f6.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1034,6 +1215,12 @@ public class MainActivity extends Activity {
 		font07Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f7.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1043,6 +1230,12 @@ public class MainActivity extends Activity {
 		font08Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f8.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1052,6 +1245,12 @@ public class MainActivity extends Activity {
 		font09Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f9.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1061,6 +1260,12 @@ public class MainActivity extends Activity {
 		font10Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f10.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1071,6 +1276,12 @@ public class MainActivity extends Activity {
 		font11Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f11.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1081,6 +1292,12 @@ public class MainActivity extends Activity {
 		font12Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f12.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1090,6 +1307,12 @@ public class MainActivity extends Activity {
 		font13Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f13.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1099,6 +1322,12 @@ public class MainActivity extends Activity {
 		font14Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f14.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1108,6 +1337,12 @@ public class MainActivity extends Activity {
 		font15Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f15.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1118,6 +1353,12 @@ public class MainActivity extends Activity {
 		font16Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f16.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1128,6 +1369,12 @@ public class MainActivity extends Activity {
 		font17Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f17.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1137,6 +1384,12 @@ public class MainActivity extends Activity {
 		font18Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f18.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1146,6 +1399,12 @@ public class MainActivity extends Activity {
 		font19Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f19.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1155,6 +1414,12 @@ public class MainActivity extends Activity {
 		font20Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f20.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1165,6 +1430,12 @@ public class MainActivity extends Activity {
 		font21Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f21.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1175,6 +1446,12 @@ public class MainActivity extends Activity {
 		font22Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f22.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1184,6 +1461,12 @@ public class MainActivity extends Activity {
 		font23Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f23.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1193,6 +1476,12 @@ public class MainActivity extends Activity {
 		font24Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f24.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1202,6 +1491,12 @@ public class MainActivity extends Activity {
 		font25Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f25.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1212,6 +1507,12 @@ public class MainActivity extends Activity {
 		font26Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f26.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1222,6 +1523,12 @@ public class MainActivity extends Activity {
 		font27Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f27.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1231,6 +1538,12 @@ public class MainActivity extends Activity {
 		font28Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f28.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1240,6 +1553,12 @@ public class MainActivity extends Activity {
 		font29Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f29.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1249,16 +1568,29 @@ public class MainActivity extends Activity {
 		font30Button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f30.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
 						fontString));
 			}
 		});
-		
+
 		miaowuButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/miaowu.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1269,6 +1601,13 @@ public class MainActivity extends Activity {
 		zhiyiButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/zhiyi.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1278,6 +1617,13 @@ public class MainActivity extends Activity {
 		changmeiButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/changmei.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1287,6 +1633,13 @@ public class MainActivity extends Activity {
 		daofengButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/daofeng.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1296,6 +1649,13 @@ public class MainActivity extends Activity {
 		tianniuButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/tianniu.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
@@ -1303,21 +1663,19 @@ public class MainActivity extends Activity {
 			}
 		});
 
-
 		shadowInFontButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutShadow.setVisibility(View.VISIBLE);
+				relativeLayoutTmd.setVisibility(View.GONE);
 				relativeLayoutFont.setVisibility(View.GONE);
 				relativeLayoutColor.setVisibility(View.GONE);
 				relativeLayoutTextsize.setVisibility(View.GONE);
 			}
 		});
-
-		
 
 		textsizeInFontButton.setOnClickListener(new OnClickListener() {
 
@@ -1325,9 +1683,26 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutTextsize.setVisibility(View.VISIBLE);
+				relativeLayoutTmd.setVisibility(View.GONE);
+				relativeLayoutFont.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.GONE);
+				relativeLayoutColor.setVisibility(View.GONE);
+			}
+		});
+
+		tmdInFontButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
+				relativeLayoutTmd.setVisibility(View.VISIBLE);
+				relativeLayoutTextsize.setVisibility(View.GONE);
 				relativeLayoutFont.setVisibility(View.GONE);
 				relativeLayoutShadow.setVisibility(View.GONE);
 				relativeLayoutColor.setVisibility(View.GONE);
@@ -1340,31 +1715,32 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutColor.setVisibility(View.VISIBLE);
+				relativeLayoutTmd.setVisibility(View.GONE);
 				relativeLayoutFont.setVisibility(View.GONE);
 				relativeLayoutShadow.setVisibility(View.GONE);
 				relativeLayoutTextsize.setVisibility(View.GONE);
 			}
 		});
-		
+
 		fontInFontButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
-				relativeLayout0.setVisibility(View.GONE);
+				relativeLayout01.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutFont.setVisibility(View.VISIBLE);
+				relativeLayoutTmd.setVisibility(View.GONE);
 				relativeLayoutColor.setVisibility(View.GONE);
 				relativeLayoutShadow.setVisibility(View.GONE);
 				relativeLayoutTextsize.setVisibility(View.GONE);
 			}
 		});
 
-		
 	};
 
 	/* 设定ImageView的透明度渐显出来 */
@@ -1425,13 +1801,21 @@ public class MainActivity extends Activity {
 			// newBitmap = stackBlurManager.returnBlurredImage();
 			// return newBitmap;
 
-			Bitmap result0 = rsBlur(bitmap0, MainActivity.this, progress0 + 1);
+			Matrix matrix = new Matrix();
+			matrix.postScale(0.5f, 0.5f); // 长和宽放大缩小的比例
+			Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0,
+					bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+			Bitmap result0 = rsBlur(resizeBmp, MainActivity.this, progress0 + 1);
 			Bitmap result = rsBlur(result0, MainActivity.this, progress0 + 1);
-			Bitmap result1 = rsBlur(result, MainActivity.this, progress0 + 1);
-			Bitmap result2 = rsBlur(result1, MainActivity.this, progress0 + 1);
-			Bitmap result3 = rsBlur(result2, MainActivity.this, progress0 + 1);
-			myImageView.setImageBitmap(result);
-			newBitmap = result3;
+
+			Matrix matrix0 = new Matrix();
+			matrix0.postScale(2f, 2f); // 长和宽放大缩小的比例
+			Bitmap resizeBmp0 = Bitmap.createBitmap(result, 0, 0,
+					result.getWidth(), result.getHeight(), matrix, true);
+
+			myImageView.setImageBitmap(resizeBmp0);
+			newBitmap = resizeBmp0;
 			icon = newBitmap;
 
 			return newBitmap;
@@ -1650,6 +2034,24 @@ public class MainActivity extends Activity {
 		Toast.makeText(getApplicationContext(),
 				"成功保存到" + "/sdcard/" + bitName + ".png", Toast.LENGTH_LONG)
 				.show();
+	}
+
+	// 去色
+	public static Bitmap toGrayscale(Bitmap bmpOriginal) {
+		int width, height;
+		height = bmpOriginal.getHeight();
+		width = bmpOriginal.getWidth();
+
+		Bitmap bmpGrayscale = Bitmap.createBitmap(width, height,
+				Bitmap.Config.RGB_565);
+		Canvas c = new Canvas(bmpGrayscale);
+		Paint paint = new Paint();
+		ColorMatrix cm = new ColorMatrix();
+		cm.setSaturation(0);
+		ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+		paint.setColorFilter(f);
+		c.drawBitmap(bmpOriginal, 0, 0, paint);
+		return bmpGrayscale;
 	}
 
 }

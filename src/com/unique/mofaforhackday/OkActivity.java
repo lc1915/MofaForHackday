@@ -82,7 +82,7 @@ public class OkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(OkActivity.this, FirstActivity.class);
+				intent.setClass(OkActivity.this, ViewpagerActivity.class);
 				startActivity(intent);
 				finish();
 			}

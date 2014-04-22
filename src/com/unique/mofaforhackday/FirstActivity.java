@@ -42,9 +42,9 @@ public class FirstActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
 		//this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				//WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
+		//		WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.first_activity);
-		
+
 		WindowManager manager = getWindowManager();
 		int width = manager.getDefaultDisplay().getWidth();
 		int height = manager.getDefaultDisplay().getHeight();
@@ -52,22 +52,25 @@ public class FirstActivity extends Activity {
 		mofazhizuoButton = (ImageButton) findViewById(R.id.imageButton_mofazhizuo);
 		shareButton = (ImageButton) findViewById(R.id.imageButton_share);
 		aboutButton = (ImageButton) findViewById(R.id.imageButton_about);
-		imageView=(ImageView)findViewById(R.id.imageView1);
-		
-		/*imageView.setDrawingCacheEnabled(true);
-		Bitmap icon = Bitmap.createBitmap(imageView.getDrawingCache());
-		imageView.setDrawingCacheEnabled(false);
-		
-		RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayout);  
-        relativeLayout.removeView(imageView);
-        
-        MarginLayoutParams mp = new MarginLayoutParams(icon.getWidth(),icon.getHeight());  //item的宽高
-        mp.setMargins(0, 0, 0, (int)(height*0.5));//分别是margin_top那四个属性
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(mp);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        imageView.setLayoutParams(lp);
-        relativeLayout.addView(imageView);*/
+		imageView = (ImageView) findViewById(R.id.imageView1);
+
+		/*
+		 * imageView.setDrawingCacheEnabled(true); Bitmap icon =
+		 * Bitmap.createBitmap(imageView.getDrawingCache());
+		 * imageView.setDrawingCacheEnabled(false);
+		 * 
+		 * RelativeLayout
+		 * relativeLayout=(RelativeLayout)findViewById(R.id.relativeLayout);
+		 * relativeLayout.removeView(imageView);
+		 * 
+		 * MarginLayoutParams mp = new
+		 * MarginLayoutParams(icon.getWidth(),icon.getHeight()); //item的宽高
+		 * mp.setMargins(0, 0, 0, (int)(height*0.5));//分别是margin_top那四个属性
+		 * RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(mp);
+		 * lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		 * lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		 * imageView.setLayoutParams(lp); relativeLayout.addView(imageView);
+		 */
 
 		contentResolver = this.getContentResolver();
 		mofazhizuoButton.setOnClickListener(new OnClickListener() {
@@ -85,22 +88,24 @@ public class FirstActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(FirstActivity.this, SettingActivity.class);
+				intent.setClass(FirstActivity.this, ViewpagerActivity.class);
 				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+				finish();
 			}
 		});
 
 		shareButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent sendIntent = new Intent();  
-				sendIntent.setAction(Intent.ACTION_SEND);  
-				sendIntent.putExtra(Intent.EXTRA_TEXT, "我在使用模法处理图片哦~你也来试试吧！");  
-				sendIntent.setType("text/plain");  
-				startActivity(sendIntent);  
+				Intent sendIntent = new Intent();
+				sendIntent.setAction(Intent.ACTION_SEND);
+				sendIntent.putExtra(Intent.EXTRA_TEXT, "我在使用模法处理图片~你也来试试吧！");
+				sendIntent.setType("text/plain");
+				startActivity(sendIntent);
 			}
 		});
-
 	}
 
 	@SuppressWarnings("deprecation")
@@ -112,40 +117,42 @@ public class FirstActivity extends Activity {
 				&& null != data) {
 			selectedImage = data.getData();
 
-			//压缩图片 避免出现OOM
+			// 压缩图片 避免出现OOM
 			try {
-				Display display = getWindowManager().getDefaultDisplay(); 
-				Log.i("view" , "height:" +display.getHeight()); 
-				Log.i("view" , "width:" +display.getWidth());
-				DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-				Log.i("view" , "height" +displayMetrics.heightPixels); 
-				Log.i("view" , "width" +displayMetrics.widthPixels);
-				
-				int x=displayMetrics.widthPixels;
-				int y=displayMetrics.heightPixels;
-				
+				Display display = getWindowManager().getDefaultDisplay();
+				Log.i("view", "height:" + display.getHeight());
+				Log.i("view", "width:" + display.getWidth());
+				DisplayMetrics displayMetrics = getResources()
+						.getDisplayMetrics();
+				Log.i("view", "height" + displayMetrics.heightPixels);
+				Log.i("view", "width" + displayMetrics.widthPixels);
+
+				int x = displayMetrics.widthPixels;
+				int y = displayMetrics.heightPixels;
+
 				Bitmap bitmap0 = BitmapFactory.decodeStream(contentResolver
 						.openInputStream(selectedImage));
-				
+
 				int width = bitmap0.getWidth();
 				int height = bitmap0.getHeight();
 				int newWidth = x;
 				int newHeight = y;
-				
+
 				float scaleWidth = ((float) newWidth) / width;
 				float scaleHeight = ((float) newHeight) / height;
-				
-				if(width/newWidth<height/newHeight){
-					scaleHeight=scaleWidth;
-				}else{
-					scaleWidth=scaleHeight;
+
+				if (width / newWidth < height / newHeight) {
+					scaleHeight = scaleWidth;
+				} else {
+					scaleWidth = scaleHeight;
 				}
-				
+
 				Matrix matrix = new Matrix();
 				matrix.postScale(scaleWidth, scaleHeight);
 				// create the new Bitmap object
-				bitmap = Bitmap.createBitmap(bitmap0, 0, 0, width, height, matrix, true);
-				
+				bitmap = Bitmap.createBitmap(bitmap0, 0, 0, width, height,
+						matrix, true);
+
 			} catch (FileNotFoundException e) {
 				Log.e("Exception", e.getMessage(), e);
 			}
@@ -153,7 +160,7 @@ public class FirstActivity extends Activity {
 			Intent intent = new Intent();
 			intent.setClass(FirstActivity.this, CutPictureActivity.class);
 			startActivity(intent);
-			// finish();
+			finish();
 		}
 
 	}

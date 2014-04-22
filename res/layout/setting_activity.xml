@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativelayout000"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background" >
+    android:background="#00ffffff" >
 
     <Button
         android:id="@+id/button1"
@@ -13,8 +14,9 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
+        android:gravity="center"
         android:background="@drawable/buttonclick_selector"
-        android:text="                关于                "
+        android:text="关于"
         android:textColor="#ffffff" />
 
     <Button
@@ -26,8 +28,9 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
+        android:gravity="center"
         android:background="@drawable/buttonclick_selector"
-        android:text="                反馈                "
+        android:text="分享"
         android:textColor="#ffffff" />
 
     <Button
@@ -40,7 +43,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
         android:background="@drawable/buttonclick_selector"
-        android:text="                更新                "
+        android:text="更新"
         android:textColor="#ffffff" />
 
     <ImageView

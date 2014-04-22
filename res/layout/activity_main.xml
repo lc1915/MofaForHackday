@@ -26,7 +26,7 @@
         android:content="@+id/content"
         android:handle="@+id/handle"
         android:orientation="vertical"
-        android:topOffset="30dp" >
+        android:topOffset="0dp" >
 
         <RelativeLayout
             android:id="@+id/handle"
@@ -36,11 +36,11 @@
             android:background="#60000000"
             android:orientation="vertical" >
 
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.8dp"
                 android:layout_marginTop="1dp"
-                android:background="@drawable/mofa_0001_line" />
+                android:background="#80ffffff" />
 
             <ImageButton
                 android:id="@+id/handle_selector"
@@ -52,11 +52,11 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/mofa_up" />
 
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.8dp"
                 android:layout_marginTop="41dp"
-                android:background="@drawable/mofa_0001_line" />
+                android:background="#80ffffff" />
         </RelativeLayout>
 
         <LinearLayout
@@ -70,10 +70,51 @@
                 android:id="@+id/relativeLayout00"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="6dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="16dp" >
+                android:layout_marginTop="10dp" >
+
+                <ImageButton
+                    android:id="@+id/mohu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/mohu_selector" />
+
+                <ImageButton
+                    android:id="@+id/wenzi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/wenzi_selector" />
+
+                <ImageButton
+                    android:id="@+id/quse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/quse_selector" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.8dp"
+                android:layout_marginTop="4dp"
+                android:background="#80ffffff" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout01"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="1.5dp"
+                android:layout_marginLeft="28dp"
+                android:layout_marginRight="28dp"
+                android:visibility="gone" >
 
                 <ImageButton
                     android:id="@+id/jian"
@@ -106,71 +147,19 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relativeLayout0"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="48.5dp" >
-
-                <ImageButton
-                    android:id="@+id/imageButton_word"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="30dp"
-                    android:background="@drawable/word_selector_caozuo" />
-
-                <ImageButton
-                    android:id="@+id/imageButton_ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imageButton_word"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/ok_selector_caozuo" />
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="110dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="38.5dp"
+                android:layout_marginBottom="15.5dp"
                 android:visibility="gone" >
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayout10"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="114.5dp" >
-
-                    <ImageButton
-                        android:id="@+id/imageButton_word2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="30dp"
-                        android:background="@drawable/word_selector_caozuo" />
-
-                    <ImageButton
-                        android:id="@+id/imageButton_ok2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imageButton_word2"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="30dp"
-                        android:background="@drawable/ok_selector_caozuo" />
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout11"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="54.5dp" >
+                    android:layout_marginBottom="53.5dp" >
 
                     <EditText
                         android:id="@+id/editText1"
@@ -213,36 +202,44 @@
                     android:id="@+id/imageButton_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="30dp"
+                    android:layout_alignBottom="@+id/imageButton_tmd"
+                    android:layout_marginRight="30dp"
+                    android:layout_toLeftOf="@+id/imageButton_textsize"
                     android:background="@drawable/b_0008_color" />
 
                 <ImageButton
                     android:id="@+id/imageButton_shadow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imageButton_color"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
+                    android:layout_alignBottom="@+id/imageButton_tmd"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toRightOf="@+id/imageButton_font"
                     android:background="@drawable/b_0009_yinying" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_tmd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/b_toumingdu" />
 
                 <ImageButton
                     android:id="@+id/imageButton_textsize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imageButton_color"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="100dp"
+                    android:layout_alignBottom="@+id/imageButton_tmd"
+                    android:layout_marginRight="30dp"
+                    android:layout_toLeftOf="@+id/imageButton_tmd"
                     android:background="@drawable/b_0012_textsize" />
 
                 <ImageButton
                     android:id="@+id/imageButton_font"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/imageButton_color"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="100dp"
+                    android:layout_alignBottom="@+id/imageButton_tmd"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toRightOf="@+id/imageButton_tmd"
                     android:background="@drawable/b_0018_font" />
             </RelativeLayout>
 
@@ -251,41 +248,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="38.5dp"
+                android:layout_marginBottom="5.5dp"
                 android:visibility="gone" >
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayout20"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="144.5dp" >
-
-                    <ImageButton
-                        android:id="@+id/imageButton_word3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="30dp"
-                        android:background="@drawable/word_selector_caozuo" />
-
-                    <ImageButton
-                        android:id="@+id/imageButton_ok3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imageButton_word3"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="30dp"
-                        android:background="@drawable/ok_selector_caozuo" />
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout21"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="94.5dp" >
+                    android:layout_marginBottom="124.5dp" >
 
                     <EditText
                         android:id="@+id/editText2"
@@ -325,67 +296,84 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/relativeLayout21"
+                    android:id="@+id/relativeLayout31"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="44.5dp" >
+                    android:layout_marginBottom="64.5dp" >
 
                     <ImageButton
                         android:id="@+id/imageButton_colorInFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="30dp"
+                        android:layout_alignBottom="@+id/imageButton_tmdInFont"
+                        android:layout_marginRight="30dp"
+                        android:layout_toLeftOf="@+id/imageButton_textsizeInFont"
                         android:background="@drawable/b_0008_color" />
 
                     <ImageButton
                         android:id="@+id/imageButton_shadowInFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imageButton_colorInFont"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="30dp"
+                        android:layout_alignBottom="@+id/imageButton_tmdInFont"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toRightOf="@+id/imageButton_fontInFont"
                         android:background="@drawable/b_0009_yinying" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton_tmdInFont"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/b_toumingdu" />
 
                     <ImageButton
                         android:id="@+id/imageButton_textsizeInFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imageButton_colorInFont"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="100dp"
+                        android:layout_alignBottom="@+id/imageButton_tmdInFont"
+                        android:layout_marginRight="30dp"
+                        android:layout_toLeftOf="@+id/imageButton_tmdInFont"
                         android:background="@drawable/b_0012_textsize" />
 
                     <ImageButton
                         android:id="@+id/imageButton_fontInFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imageButton_colorInFont"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
+                        android:layout_alignBottom="@+id/imageButton_tmdInFont"
+                        android:layout_marginLeft="30dp"
+                        android:layout_toRightOf="@+id/imageButton_tmdInFont"
                         android:background="@drawable/b_0018_font" />
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="51.5dp"
+                    android:background="#80ffffff" />
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout_font"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="45dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="4.5dp" 
-                    android:visibility="gone">
+                    android:layout_marginBottom="0.5dp"
+                    android:visibility="gone" >
 
-                    <Switch
+                    <ToggleButton
                         android:id="@+id/switch_font"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="27dp"
-                        android:layout_marginRight="27dp"
-                        android:textOff="中"
-                        android:textOn="英" />
+                        android:layout_marginRight="17dp"
+                        android:background="@drawable/font_toggle_selector"
+                        android:checked="true"
+                        android:textOff=""
+                        android:textOn="" />
 
                     <HorizontalScrollView
                         android:id="@+id/horizontalScrollView1"
@@ -394,7 +382,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="4.5dp"
-                        android:layout_marginLeft="27dp"
+                        android:layout_marginLeft="17dp"
                         android:layout_toRightOf="@+id/switch_font" >
 
                         <LinearLayout
@@ -619,7 +607,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="4.5dp"
+                        android:layout_marginBottom="1.5dp"
                         android:layout_marginLeft="27dp"
                         android:layout_marginRight="27dp"
                         android:layout_toRightOf="@+id/switch_font"
@@ -672,10 +660,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="8.5dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp" 
-                    android:visibility="gone">
+                    android:layout_marginBottom="9.5dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginRight="28dp"
+                    android:visibility="gone" >
 
                     <ImageButton
                         android:id="@+id/text_jian"
@@ -707,13 +695,53 @@
                         android:background="@drawable/b_0015_textsize_plus" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/relativeLayout_tmd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="9.5dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginRight="28dp"
+                    android:visibility="gone" >
+
+                    <ImageButton
+                        android:id="@+id/jiantmd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/b_0000_minus" />
+
+                    <SeekBar
+                        android:id="@+id/seekBartmd"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="13.5dp"
+                        android:layout_marginRight="13.5dp"
+                        android:maxHeight="13.15dp"
+                        android:minHeight="13.15dp"
+                        android:progressDrawable="@drawable/seek_drawable"
+                        android:thumb="@drawable/thumb"
+                        android:thumbOffset="5.0dip" />
+
+                    <ImageButton
+                        android:id="@+id/jiatmd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/b_0001_plus" />
+                </RelativeLayout>
+
                 <HorizontalScrollView
                     android:id="@+id/relativeLayout_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="4.5dp" 
-                    android:visibility="gone">
+                    android:layout_marginBottom="5.5dp"
+                    android:visibility="gone" >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -970,22 +998,50 @@
                 <RelativeLayout
                     android:id="@+id/relativeLayout_shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="45dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="4.5dp" 
-                    android:visibility="gone">
+                    android:layout_marginBottom="0.5dp"
+                    android:visibility="gone" >
 
-                    <Switch
+                    <ToggleButton
                         android:id="@+id/switch1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:textOff="关"
-                        android:textOn="开" />
+                        android:background="@drawable/toggle_selector"
+                        android:checked="true"
+                        android:textOff=""
+                        android:textOn="" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
     </com.unique.mofaforhackday.WrapSlidingDrawer>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="26dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/save_selector" />
+
+        <ImageButton
+            android:id="@+id/quxiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/save"
+            android:layout_marginLeft="26dp"
+            android:background="@drawable/quxiao_selector" />
+    </RelativeLayout>
 
 </RelativeLayout>
