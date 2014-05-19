@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.R.color;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,7 +25,10 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.net.Uri;
@@ -479,8 +484,10 @@ public class MainActivity extends Activity {
 				AsyncTaskThread thread = new AsyncTaskThread();
 				thread.doInBackground(bitmap0);
 
-				if (progress0 == 0 || progress0 == 1)
+				if (progress0 == 0 || progress0 == 1) {
+					icon=firstBitmap;
 					myImageView.setImageBitmap(firstBitmap);
+				}
 
 				// mHandler.post(fadeInTask);
 			}
@@ -618,7 +625,7 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		
+
 		editText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -637,7 +644,7 @@ public class MainActivity extends Activity {
 				mainLayout.addView(textView);
 			}
 		});
-		
+
 		editText1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -700,7 +707,13 @@ public class MainActivity extends Activity {
 
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -729,7 +742,7 @@ public class MainActivity extends Activity {
 											int which) {
 										Intent intent = new Intent();
 										intent.setClass(MainActivity.this,
-												FirstActivity.class);
+												ViewpagerActivity.class);
 										startActivity(intent);
 										finish();
 									}
@@ -852,7 +865,13 @@ public class MainActivity extends Activity {
 					newBitmap = icon;
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -869,7 +888,13 @@ public class MainActivity extends Activity {
 					newBitmap = icon;
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1122,7 +1147,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1140,7 +1171,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1155,7 +1192,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1170,7 +1213,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1185,7 +1234,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1201,7 +1256,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1217,7 +1278,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1232,7 +1299,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1247,7 +1320,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1262,7 +1341,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1278,7 +1363,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1294,7 +1385,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1309,7 +1406,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1324,7 +1427,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1339,7 +1448,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1355,7 +1470,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1371,7 +1492,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1386,7 +1513,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1401,7 +1534,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1416,7 +1555,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1432,7 +1577,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1448,7 +1599,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1463,7 +1620,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1478,7 +1641,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1493,7 +1662,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1509,7 +1684,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1525,7 +1706,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1540,7 +1727,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1555,7 +1748,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1570,7 +1769,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1586,7 +1791,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1603,7 +1814,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1619,7 +1836,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1635,7 +1858,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1651,7 +1880,13 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
 
-				rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
 				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
@@ -1808,12 +2043,12 @@ public class MainActivity extends Activity {
 
 			Bitmap result0 = rsBlur(resizeBmp, MainActivity.this, progress0 + 1);
 			Bitmap result = rsBlur(result0, MainActivity.this, progress0 + 1);
-
+			
 			Matrix matrix0 = new Matrix();
 			matrix0.postScale(2f, 2f); // 长和宽放大缩小的比例
 			Bitmap resizeBmp0 = Bitmap.createBitmap(result, 0, 0,
 					result.getWidth(), result.getHeight(), matrix, true);
-
+			
 			myImageView.setImageBitmap(resizeBmp0);
 			newBitmap = resizeBmp0;
 			icon = newBitmap;

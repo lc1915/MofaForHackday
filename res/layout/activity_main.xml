@@ -381,8 +381,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="4.5dp"
+                        android:layout_marginBottom="9.5dp"
                         android:layout_marginLeft="17dp"
+                        android:scrollbarThumbHorizontal="@drawable/mofa_0004_seekbar_white"
                         android:layout_toRightOf="@+id/switch_font" >
 
                         <LinearLayout

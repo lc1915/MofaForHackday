@@ -18,9 +18,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class OkActivity extends Activity {
@@ -29,6 +35,7 @@ public class OkActivity extends Activity {
 	private ImageButton wallpaperButton;
 	private ImageButton homeButton;
 	private ImageButton shareButton;
+	private RelativeLayout okrelativeLayout;
 
 	Bitmap bitmap;
 	WallpaperManager wallpaperManager;
@@ -45,6 +52,22 @@ public class OkActivity extends Activity {
 		wallpaperButton = (ImageButton) findViewById(R.id.imageButton_wallpaper);
 		homeButton = (ImageButton) findViewById(R.id.imageButton_home);
 		shareButton = (ImageButton) findViewById(R.id.imageButton_share);
+		okrelativeLayout=(RelativeLayout)findViewById(R.id.ok_relativelayout);
+		
+		AnimationSet animationSet = new AnimationSet(false);
+		TranslateAnimation translateAnimation = new TranslateAnimation(
+				Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f,
+				Animation.RELATIVE_TO_SELF, 4f, Animation.RELATIVE_TO_SELF,
+				-0f);
+		translateAnimation.setInterpolator(new OvershootInterpolator(0.7f));
+		animationSet.addAnimation(translateAnimation);
+		animationSet.setDuration(550);
+		animationSet.setStartOffset(5);// 执行前停留的时间（毫秒）
+		animationSet.setFillAfter(true);// 如果为true，执行完动画后，停留到执行开始的时候
+		
+	    LayoutAnimationController laController=new LayoutAnimationController(animationSet);  
+	    laController.setOrder(LayoutAnimationController.ORDER_NORMAL); 
+	    okrelativeLayout.setLayoutAnimation(laController);  
 
 		if (MainActivity.icon != null)
 			bitmap = MainActivity.icon;

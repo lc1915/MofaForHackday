@@ -29,6 +29,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.BounceInterpolator;
+import android.view.animation.LayoutAnimationController;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -49,6 +50,8 @@ public class ViewpagerActivity extends Activity implements
 	private ImageButton shareButton;
 	private ImageButton aboutButton;
 	private ImageView imageView;
+	
+	private RelativeLayout relativeLayout;
 
 	static Bitmap bitmap;
 	private Uri selectedImage;
@@ -83,6 +86,7 @@ public class ViewpagerActivity extends Activity implements
 		shareButton = (ImageButton) view0.findViewById(R.id.imageButton_share);
 		aboutButton = (ImageButton) view0.findViewById(R.id.imageButton_about);
 		imageView = (ImageView) view0.findViewById(R.id.imageView1);
+		relativeLayout=(RelativeLayout)view0.findViewById(R.id.relativeLayout);
 
 		AnimationSet animationSet = new AnimationSet(false);
 		TranslateAnimation translateAnimation = new TranslateAnimation(
@@ -91,24 +95,15 @@ public class ViewpagerActivity extends Activity implements
 				-0f);
 		translateAnimation.setInterpolator(new OvershootInterpolator(0.7f));
 		animationSet.addAnimation(translateAnimation);
-		animationSet.setDuration(700);
+		animationSet.setDuration(550);
 		animationSet.setStartOffset(5);// 执行前停留的时间（毫秒）
 		animationSet.setFillAfter(true);// 如果为true，执行完动画后，停留到执行开始的时候
-		mofazhizuoButton.startAnimation(animationSet);
 		
-		AnimationSet animationSet1 = new AnimationSet(false);
-		animationSet1.addAnimation(translateAnimation);
-		animationSet1.setDuration(700);
-		animationSet1.setStartOffset(200);// 执行前停留的时间（毫秒）
-		animationSet1.setFillAfter(true);// 如果为true，执行完动画后，停留到执行开始的时候
-		shareButton.startAnimation(animationSet1);
-		
-		AnimationSet animationSet2 = new AnimationSet(false);
-		animationSet2.addAnimation(translateAnimation);
-		animationSet2.setDuration(700);
-		animationSet2.setStartOffset(200);// 执行前停留的时间（毫秒）
-		animationSet2.setFillAfter(true);// 如果为true，执行完动画后，停留到执行开始的时候
-		aboutButton.startAnimation(animationSet2);
+	    LayoutAnimationController laController=new LayoutAnimationController(animationSet);  
+	    laController.setOrder(LayoutAnimationController.ORDER_NORMAL); 
+	    relativeLayout.setLayoutAnimation(laController);  
+	    
+	    
 
 		contentResolver = this.getContentResolver();
 		mofazhizuoButton.setOnClickListener(new OnClickListener() {
@@ -233,6 +228,7 @@ public class ViewpagerActivity extends Activity implements
 
 		// 绑定回调
 		vp.setOnPageChangeListener(this);
+		
 	}
 
 	// 当滑动状态改变时调用

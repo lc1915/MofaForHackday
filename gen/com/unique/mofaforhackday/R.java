@@ -250,10 +250,11 @@ public final class R {
     }
     public static final class id {
         public static final int SecondaryProgress=0x01010000;
-        public static final int action_settings=0x7f0a008f;
-        public static final int button1=0x7f0a008c;
-        public static final int button2=0x7f0a008d;
-        public static final int button3=0x7f0a008e;
+        public static final int action_settings=0x7f0a0091;
+        public static final int btnrelativelayout=0x7f0a008d;
+        public static final int button1=0x7f0a008e;
+        public static final int button2=0x7f0a008f;
+        public static final int button3=0x7f0a0090;
         public static final int content=0x7f0a000a;
         public static final int editText1=0x7f0a0017;
         public static final int editText2=0x7f0a0021;
@@ -338,7 +339,7 @@ public final class R {
         public static final int imageButton_fontInFont=0x7f0a0029;
         public static final int imageButton_hao=0x7f0a0019;
         public static final int imageButton_hao2=0x7f0a0023;
-        public static final int imageButton_home=0x7f0a008a;
+        public static final int imageButton_home=0x7f0a008b;
         public static final int imageButton_miaowu=0x7f0a004c;
         public static final int imageButton_mofazhizuo=0x7f0a0084;
         public static final int imageButton_shadow=0x7f0a001d;
@@ -349,7 +350,7 @@ public final class R {
         public static final int imageButton_tianniu=0x7f0a0050;
         public static final int imageButton_tmd=0x7f0a001b;
         public static final int imageButton_tmdInFont=0x7f0a0026;
-        public static final int imageButton_wallpaper=0x7f0a0089;
+        public static final int imageButton_wallpaper=0x7f0a008a;
         public static final int imageButton_zhiyi=0x7f0a004d;
         public static final int imageView1=0x7f0a0008;
         public static final int imageView2=0x7f0a0002;
@@ -363,6 +364,7 @@ public final class R {
         public static final int ll_viewArea=0x7f0a0081;
         public static final int main=0x7f0a0007;
         public static final int mohu=0x7f0a000e;
+        public static final int ok_relativelayout=0x7f0a0089;
         public static final int quse=0x7f0a0010;
         public static final int quxiao=0x7f0a0080;
         public static final int relativeLayout=0x7f0a0083;
@@ -379,7 +381,7 @@ public final class R {
         public static final int relativeLayout_textsize=0x7f0a0051;
         public static final int relativeLayout_tmd=0x7f0a0055;
         public static final int relativelayout=0x7f0a0000;
-        public static final int relativelayout000=0x7f0a008b;
+        public static final int relativelayout000=0x7f0a008c;
         public static final int save=0x7f0a007f;
         public static final int seekBar1=0x7f0a0013;
         public static final int seekBar_text=0x7f0a0053;

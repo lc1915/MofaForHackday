@@ -105,12 +105,12 @@ public class SettingActivity extends Activity implements OnTouchListener,
 		} else if (e2.getX() - e1.getX() > snsConstant.getFlingMinDistance()
 				&& Math.abs(velocityX) > snsConstant.getFlingMinVelocity()) {
 
-			Intent intent = new Intent(SettingActivity.this,
+			/*Intent intent = new Intent(SettingActivity.this,
 					FirstActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			//Toast.makeText(this, "向右手势", Toast.LENGTH_SHORT).show();
-			finish();
+			finish();*/
 		}
 		return false;
 	}

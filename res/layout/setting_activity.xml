@@ -5,46 +5,52 @@
     android:layout_height="match_parent"
     android:background="#00ffffff" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:gravity="center"
-        android:background="@drawable/buttonclick_selector"
-        android:text="关于"
-        android:textColor="#ffffff" />
+    <RelativeLayout
+        android:id="@+id/btnrelativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:gravity="center"
-        android:background="@drawable/buttonclick_selector"
-        android:text="分享"
-        android:textColor="#ffffff" />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/buttonclick_selector"
+            android:gravity="center"
+            android:text="关于"
+            android:textColor="#ffffff" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:background="@drawable/buttonclick_selector"
-        android:text="更新"
-        android:textColor="#ffffff" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/buttonclick_selector"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/buttonclick_selector"
+            android:text="退出"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/imageView1"
