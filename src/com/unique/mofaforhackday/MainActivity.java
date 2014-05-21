@@ -2037,15 +2037,18 @@ public class MainActivity extends Activity {
 			// return newBitmap;
 
 			Matrix matrix = new Matrix();
-			matrix.postScale(0.5f, 0.5f); // 长和宽放大缩小的比例
+			matrix.postScale(0.4f, 0.4f); // 长和宽放大缩小的比例
 			Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0,
 					bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
 			Bitmap result0 = rsBlur(resizeBmp, MainActivity.this, progress0 + 1);
-			Bitmap result = rsBlur(result0, MainActivity.this, progress0 + 1);
+			Bitmap result1 = rsBlur(result0, MainActivity.this, progress0 + 1);
+			Bitmap result = rsBlur(result1, MainActivity.this, progress0 + 1);
+			
+			//draw(bitmap, "aaa");
 			
 			Matrix matrix0 = new Matrix();
-			matrix0.postScale(2f, 2f); // 长和宽放大缩小的比例
+			matrix0.postScale(2.5f, 2.5f); // 长和宽放大缩小的比例
 			Bitmap resizeBmp0 = Bitmap.createBitmap(result, 0, 0,
 					result.getWidth(), result.getHeight(), matrix, true);
 			
@@ -2079,6 +2082,52 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			return null;
 		}
+	}
+	
+	private void draw(Bitmap imageView, String str) {
+		Bitmap photo = imageView;
+
+		int width = photo.getWidth();
+		int height = photo.getHeight();
+		System.out.println("宽" + width + "高" + height);
+
+		icon = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); // 建立一个空的BitMap
+		Canvas canvas = new Canvas(icon);// 初始化画布绘制的图像到icon上
+
+		Paint photoPaint = new Paint(); // 建立画笔
+		photoPaint.setDither(true); // 获取跟清晰的图像采样
+		photoPaint.setFilterBitmap(true);// 过滤一些
+		photoPaint.setAntiAlias(true);
+
+		Rect src = new Rect(0, 0, photo.getWidth(), photo.getHeight());// 创建一个指定的新矩形的坐标
+		Rect dst = new Rect(0, 0, width, height);// 创建一个指定的新矩形的坐标
+		canvas.drawBitmap(photo, src, dst, photoPaint);// 将photo
+														// 缩放或则扩大到dst使用的填充区photoPaint
+
+		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG
+				| Paint.DEV_KERN_TEXT_FLAG);// 设置画笔
+		textPaint.setTextAlign(Paint.Align.CENTER);// 中心
+		textPaint.setShadowLayer(10, 10, 10, Color.GRAY);// 设置阴影
+		textPaint.setTextSize(80.0f);// 字体大小
+
+		// 设置自带字体
+		// AssetManager assetManager = getApplicationContext().getAssets();
+		// Log.e("ziti", fontString);
+		// Typeface typeFace = Typeface.createFromAsset(assetManager,
+		// fontString);
+		// textPaint.setTypeface(typeFace);
+
+		textPaint.setColor(Color.BLACK);// 采用的颜色
+		// textPaint.setAlpha(30);// 设置透明度
+
+		if (startX == 0 && startY == 0)
+			canvas.drawText(str, bitmap0.getWidth() / 2,
+					bitmap0.getHeight() / 2, textPaint);
+		canvas.drawText(str, startX, startY, textPaint);
+		canvas.save(Canvas.ALL_SAVE_FLAG);
+		canvas.restore();
+		imageView=icon;
+
 	}
 
 	// 模糊算法

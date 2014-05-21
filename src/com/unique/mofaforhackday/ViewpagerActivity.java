@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,10 +48,12 @@ public class ViewpagerActivity extends Activity implements
 	GestureDetector mGestureDetector;
 
 	private ImageButton mofazhizuoButton;
-	private ImageButton shareButton;
+	private ImageButton fankuiButton;
 	private ImageButton aboutButton;
 	private ImageView imageView;
-	
+
+	View view0;
+
 	private RelativeLayout relativeLayout;
 
 	static Bitmap bitmap;
@@ -69,13 +72,16 @@ public class ViewpagerActivity extends Activity implements
 		// 初始化页面
 		initViews();
 
-		mGestureDetector = new GestureDetector((OnGestureListener) this);
+		// mGestureDetector = new GestureDetector((OnGestureListener) this);
+
 		/*
-		 * ViewPager relativeLayout=(ViewPager)findViewById(R.id.viewpager);
-		 * relativeLayout.setOnTouchListener(this);
-		 * relativeLayout.setLongClickable(true);
+		 * ViewPager relativeLayout111 = (ViewPager)
+		 * findViewById(R.id.viewpager);
+		 * relativeLayout111.setOnTouchListener(this);
+		 * relativeLayout111.setLongClickable(true);
 		 */
-		View view0 = views.get(0);
+
+		view0 = views.get(0);
 
 		WindowManager manager = getWindowManager();
 		int width = manager.getDefaultDisplay().getWidth();
@@ -83,27 +89,26 @@ public class ViewpagerActivity extends Activity implements
 
 		mofazhizuoButton = (ImageButton) view0
 				.findViewById(R.id.imageButton_mofazhizuo);
-		shareButton = (ImageButton) view0.findViewById(R.id.imageButton_share);
+		fankuiButton = (ImageButton) view0.findViewById(R.id.imageButton_share);
 		aboutButton = (ImageButton) view0.findViewById(R.id.imageButton_about);
 		imageView = (ImageView) view0.findViewById(R.id.imageView1);
-		relativeLayout=(RelativeLayout)view0.findViewById(R.id.relativeLayout);
+		relativeLayout = (RelativeLayout) view0
+				.findViewById(R.id.relativeLayout);
 
 		AnimationSet animationSet = new AnimationSet(false);
 		TranslateAnimation translateAnimation = new TranslateAnimation(
 				Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f,
-				Animation.RELATIVE_TO_SELF, 4f, Animation.RELATIVE_TO_SELF,
-				-0f);
+				Animation.RELATIVE_TO_SELF, 4f, Animation.RELATIVE_TO_SELF, -0f);
 		translateAnimation.setInterpolator(new OvershootInterpolator(0.7f));
 		animationSet.addAnimation(translateAnimation);
 		animationSet.setDuration(550);
 		animationSet.setStartOffset(5);// 执行前停留的时间（毫秒）
 		animationSet.setFillAfter(true);// 如果为true，执行完动画后，停留到执行开始的时候
-		
-	    LayoutAnimationController laController=new LayoutAnimationController(animationSet);  
-	    laController.setOrder(LayoutAnimationController.ORDER_NORMAL); 
-	    relativeLayout.setLayoutAnimation(laController);  
-	    
-	    
+
+		LayoutAnimationController laController = new LayoutAnimationController(
+				animationSet);
+		laController.setOrder(LayoutAnimationController.ORDER_NORMAL);
+		relativeLayout.setLayoutAnimation(laController);
 
 		contentResolver = this.getContentResolver();
 		mofazhizuoButton.setOnClickListener(new OnClickListener() {
@@ -124,6 +129,27 @@ public class ViewpagerActivity extends Activity implements
 			}
 		});
 
+		fankuiButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(ViewpagerActivity.this, FankuiActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right); 
+			}
+		});
+
+		View view1 = views.get(1);
+
+		Button aboutButton = (Button) view1.findViewById(R.id.button1);
+		aboutButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ViewpagerActivity.vp.setCurrentItem(2);
+			}
+		});
+
+		Button shareButton = (Button) view1.findViewById(R.id.button2);
 		shareButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -135,21 +161,12 @@ public class ViewpagerActivity extends Activity implements
 			}
 		});
 
-		View view1 = views.get(1);
-
-		Button aboutButton = (Button) view1.findViewById(R.id.button1);
-		aboutButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ViewpagerActivity.vp.setCurrentItem(2);
-			}
-		});
-
-		RelativeLayout relativeLayout1 = (RelativeLayout) view1
-				.findViewById(R.id.relativelayout000);
-		relativeLayout1.setOnTouchListener(this);
-		relativeLayout1.setLongClickable(true);
+		/*
+		 * RelativeLayout relativeLayout1 = (RelativeLayout) view0
+		 * .findViewById(R.id.first_relativelayout);
+		 * relativeLayout1.setOnTouchListener(this);
+		 * relativeLayout1.setLongClickable(true);
+		 */
 	}
 
 	@SuppressWarnings("deprecation")
@@ -228,7 +245,7 @@ public class ViewpagerActivity extends Activity implements
 
 		// 绑定回调
 		vp.setOnPageChangeListener(this);
-		
+
 	}
 
 	// 当滑动状态改变时调用
@@ -244,7 +261,7 @@ public class ViewpagerActivity extends Activity implements
 	// 当新的页面被选中时调用
 	@Override
 	public void onPageSelected(int arg0) {
-		// 设置底部小点选中状态
+
 	}
 
 	@Override
@@ -296,7 +313,7 @@ public class ViewpagerActivity extends Activity implements
 				&& Math.abs(velocityX) > snsConstant.getFlingMinVelocity()) {
 
 			Intent intent = new Intent(ViewpagerActivity.this,
-					SettingActivity.class);
+					FankuiActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			// Toast.makeText(this, "向右手势", Toast.LENGTH_SHORT).show();
