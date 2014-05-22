@@ -702,7 +702,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(),
-						"成功保存到" + "/sdcard/" + icon + ".png", Toast.LENGTH_LONG)
+						"成功保存到" + "/sdcard/mofa/" + icon + ".png", Toast.LENGTH_LONG)
 						.show();
 
 				mainLayout.removeView(textView);

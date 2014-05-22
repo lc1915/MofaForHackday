@@ -13,7 +13,7 @@
         android:layout_marginBottom="70dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/fankui_round_corner"
         android:gravity="top"
         android:hint="请输入您的反馈，我们将不断改进~"
