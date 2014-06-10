@@ -55,29 +55,28 @@ public class FankuiActivity extends Activity implements OnTouchListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-		//requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.fankui_activity);
-		
-		//getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
-		ActionBar actionBar=getActionBar();
-		
-		getActionBar().setBackgroundDrawable(this.getBaseContext().getResources().getDrawable(R.drawable.BackBar));
-		getActionBar().show();
-		/*mButton = (Button) this.findViewById(R.id.Button1);
-		// 按钮监听
-		mButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(FankuiActivity.this, ViewpagerActivity.class);
-				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-				finish();
-			}
-		});*/
+		// getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+		// R.layout.title);
+		ActionBar actionBar = getActionBar();
+
+		getActionBar().setBackgroundDrawable(
+				this.getBaseContext().getResources()
+						.getDrawable(R.drawable.BackBar));
+		getActionBar().show();
+		/*
+		 * mButton = (Button) this.findViewById(R.id.Button1); // 按钮监听
+		 * mButton.setOnClickListener(new View.OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { // TODO Auto-generated method
+		 * stub Intent intent = new Intent();
+		 * intent.setClass(FankuiActivity.this, ViewpagerActivity.class);
+		 * startActivity(intent);
+		 * overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		 * finish(); } });
+		 */
 
 		mGestureDetector = new GestureDetector((OnGestureListener) this);
 		// 给布局文件添加事件
@@ -221,28 +220,28 @@ public class FankuiActivity extends Activity implements OnTouchListener,
 		// TODO Auto-generated method stub
 
 	}
-	
-	@Override 
-	public boolean onCreateOptionsMenu(Menu menu) { 
-	    MenuInflater inflater = getMenuInflater(); 
-	    inflater.inflate(R.menu.main_activity, menu); 
-	    return true; 
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity, menu);
+		return true;
 	}
-	
-	@Override 
-	public boolean onOptionsItemSelected(MenuItem item) { 
-	    switch (item.getItemId()) { 
-	        case R.id.menu_fankui: 
-	            // app icon in action bar clicked; go home 
-	            Intent intent = new Intent(this, ViewpagerActivity.class); 
-	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //不知道啥意思
-	            startActivity(intent); 
-	            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-	            finish();
-	            return true; 
-	        default: 
-	            return super.onOptionsItemSelected(item); 
-	    } 
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.main_fankui:
+			// app icon in action bar clicked; go home
+			Intent intent = new Intent(this, ViewpagerActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 不知道啥意思
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

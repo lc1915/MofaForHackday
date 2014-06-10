@@ -51,7 +51,7 @@ public class ViewpagerActivity extends Activity implements
 	private ImageButton fankuiButton;
 	private ImageButton aboutButton;
 	private ImageView imageView;
-
+	
 	View view0;
 
 	private RelativeLayout relativeLayout;
@@ -64,12 +64,12 @@ public class ViewpagerActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
+		//getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		
-		getActionBar().hide();
-		// this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		// WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
+		//getActionBar().hide();
+		 this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		 WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.guide);
 
 		// 初始化页面
@@ -143,6 +143,15 @@ public class ViewpagerActivity extends Activity implements
 		});
 
 		View view1 = views.get(1);
+		
+		/*Button sBackButton=(Button)view1.findViewById(R.id.button_fanhui);
+		sBackButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ViewpagerActivity.vp.setCurrentItem(0);
+			}
+		});*/
 
 		Button aboutButton = (Button) view1.findViewById(R.id.button1);
 		aboutButton.setOnClickListener(new OnClickListener() {
@@ -163,6 +172,25 @@ public class ViewpagerActivity extends Activity implements
 				startActivity(sendIntent);
 			}
 		});
+		
+		Button checkButton = (Button)view1.findViewById(R.id.button3);
+		checkButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
+		View view2=views.get(2);
+		
+		/*Button aBackButton=(Button)view2.findViewById(R.id.button_fanhui0);
+		aBackButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ViewpagerActivity.vp.setCurrentItem(1);
+			}
+		});*/
 
 		/*
 		 * RelativeLayout relativeLayout1 = (RelativeLayout) view0
@@ -216,6 +244,7 @@ public class ViewpagerActivity extends Activity implements
 				// create the new Bitmap object
 				bitmap = Bitmap.createBitmap(bitmap0, 0, 0, width, height,
 						matrix, true);
+				rotateBitmap(bitmap, 90);
 
 			} catch (FileNotFoundException e) {
 				Log.e("Exception", e.getMessage(), e);
@@ -228,6 +257,17 @@ public class ViewpagerActivity extends Activity implements
 		}
 
 	}
+	
+	public static Bitmap rotateBitmap(Bitmap bitmap,int degress) {
+        if (bitmap != null) {
+            Matrix m = new Matrix();
+            m.postRotate(degress); 
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                    bitmap.getHeight(), m, true);
+            return bitmap;
+        }
+        return bitmap;
+    }
 
 	private void initViews() {
 		LayoutInflater inflater = LayoutInflater.from(this);

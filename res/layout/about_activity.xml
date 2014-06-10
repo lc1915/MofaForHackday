@@ -3,9 +3,10 @@
     android:id="@+id/relativelayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:screenOrientation="nosensor"
     android:background="#00ffffff"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:screenOrientation="nosensor" >
+
 
     <ImageView
         android:id="@+id/imageView3"
@@ -30,8 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="12dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
         android:src="@drawable/mofa_0000_bottomline" />
 
     <TextView
@@ -41,8 +42,8 @@
         android:layout_below="@+id/imageView3"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="123dp"
-        android:textColor="#ffffff"
-        android:text="电子邮件：aikenlovesea@gmail.com" />
+        android:text="电子邮件：aikenlovesea@gmail.com"
+        android:textColor="#ffffff" />
 
     <TextView
         android:id="@+id/textView3"
@@ -51,8 +52,8 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="7dp"
-        android:textColor="#ffffff"
-        android:text="新浪微博：@mofa应用" />
+        android:text="新浪微博：@mofa应用"
+        android:textColor="#ffffff" />
 
     <TextView
         android:id="@+id/textView1"

@@ -56,7 +56,7 @@ public class CutPictureActivity extends Activity {
 		
 		bitmap0 = ViewpagerActivity.bitmap;
 		icon = ViewpagerActivity.bitmap;
-
+		
 		// 图片居中显示
 		width = getWindowManager().getDefaultDisplay().getWidth() / 2
 				- bitmap0.getWidth() / 2;
@@ -144,10 +144,6 @@ public class CutPictureActivity extends Activity {
 					// matrix.set(currentMatrix);
 					// matrix.postTranslate(0, 0);
 					// }
-					Log.e("bbb", "dx=" + event.getX() + "-" + startPoint.x
-							+ "=" + dx);
-					Log.e("bbb", "dy=" + event.getY() + "-" + startPoint.y
-							+ "=" + dy);
 				} // 放大缩小图片
 				else if (mode == MODE_ZOOM) {
 					float endDis = distance(event);// 结束距离

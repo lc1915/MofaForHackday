@@ -56,7 +56,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:background="@drawable/tijiao_round_corner"
+            android:background="@drawable/fankui_round_corner_selector"
             android:text="提交"
             android:textColor="#27ae61"
             android:textSize="15sp" />

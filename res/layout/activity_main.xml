@@ -7,7 +7,8 @@
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="#43abcd" >
 
         <ImageView
             android:id="@+id/imageView1"
@@ -50,7 +51,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/mofa_up" />
+                android:background="@drawable/mofa_up_selector" />
 
             <View
                 android:layout_width="fill_parent"
@@ -129,13 +130,13 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_marginLeft="13.5dp"
-                    android:layout_marginRight="13.5dp"
-                    android:maxHeight="13.15dp"
-                    android:minHeight="13.15dp"
+                    android:layout_marginLeft="25.5dp"
+                    android:layout_marginRight="25.5dp"
+                    android:maxHeight="3.15dp"
+                    android:minHeight="3.15dp"
                     android:progressDrawable="@drawable/seek_drawable"
                     android:thumb="@drawable/thumb"
-                    android:thumbOffset="5.0dip" />
+                    android:thumbOffset="2.0dip" />
 
                 <ImageButton
                     android:id="@+id/jia"

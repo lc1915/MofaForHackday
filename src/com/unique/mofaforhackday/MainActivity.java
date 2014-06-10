@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +49,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -76,6 +79,8 @@ public class MainActivity extends Activity {
 	private RelativeLayout mainLayout;
 	private MyTextView textView;
 	private RelativeLayout.LayoutParams rl;
+
+	RelativeLayout layout;
 
 	private ImageButton mohuButton;
 	private ImageButton wenziButton;
@@ -267,7 +272,7 @@ public class MainActivity extends Activity {
 			public void onDrawerOpened() {
 				// TODO Auto-generated method stub
 				handleSelector.setBackground(getResources().getDrawable(
-						R.drawable.mofa_down));
+						R.drawable.mofa_down_down));
 			}
 		});
 
@@ -276,8 +281,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void onDrawerClosed() {
 				// TODO Auto-generated method stub
+				Log.e("tag", handleSelector.getBackground() + "");
 				handleSelector.setBackground(getResources().getDrawable(
-						R.drawable.mofa_up));
+						R.drawable.mofa_up_down));
 			}
 		});
 
@@ -485,7 +491,7 @@ public class MainActivity extends Activity {
 				thread.doInBackground(bitmap0);
 
 				if (progress0 == 0 || progress0 == 1) {
-					icon=firstBitmap;
+					icon = firstBitmap;
 					myImageView.setImageBitmap(firstBitmap);
 				}
 
@@ -679,6 +685,11 @@ public class MainActivity extends Activity {
 				relativeLayout01.setVisibility(View.GONE);
 				relativeLayout1.setVisibility(View.VISIBLE);
 				relativeLayoutmore.setVisibility(View.GONE);
+				relativeLayoutFont.setVisibility(View.GONE);
+				relativeLayoutColor.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.GONE);
+				relativeLayoutTextsize.setVisibility(View.GONE);
+				relativeLayoutTmd.setVisibility(View.GONE);
 			}
 		});
 
@@ -702,8 +713,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(),
-						"成功保存到" + "/sdcard/mofa/" + icon + ".png", Toast.LENGTH_LONG)
-						.show();
+						"成功保存到" + "/sdcard/mofa/" + icon + ".png",
+						Toast.LENGTH_LONG).show();
 
 				mainLayout.removeView(textView);
 
@@ -727,34 +738,75 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		// 布局文件转换为view对象
+		LayoutInflater inflater = LayoutInflater.from(this);
+		layout = (RelativeLayout) inflater.inflate(R.layout.layout_dialog,
+				null);
+
 		quxiaoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new AlertDialog.Builder(MainActivity.this)
-						.setIcon(R.drawable.ic_launcher)
-						.setTitle("Mofa")
-						.setMessage("你确定退出图片编辑吗？")
-						.setPositiveButton("是，直接回到主界面",
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										Intent intent = new Intent();
-										intent.setClass(MainActivity.this,
-												ViewpagerActivity.class);
-										startActivity(intent);
-										finish();
-									}
-								})
-						.setNegativeButton("不，我还想继续编辑",
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
+				// 对话框
+				if ((FrameLayout) layout.getParent() != null)
+					((FrameLayout) layout.getParent()).removeView(layout);
 
-									}
-								}).show();
+				final Dialog dialog = new AlertDialog.Builder(MainActivity.this)
+						.create();
+				dialog.show();
+				dialog.getWindow().setContentView(layout);
+
+				// 取消按钮
+				Button btnCancel = (Button) layout
+						.findViewById(R.id.dialog_cancel);
+				btnCancel.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(getApplicationContext(), "cancel",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+
+				// 确定按钮
+				Button btnOK = (Button) layout.findViewById(R.id.dialog_ok);
+				btnOK.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(getApplicationContext(), "ok",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+
+				// 关闭按钮
+				ImageButton btnClose = (ImageButton) layout
+						.findViewById(R.id.dialog_close);
+				btnClose.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+				/*
+				 * new AlertDialog.Builder(MainActivity.this)
+				 * .setIcon(R.drawable.ic_launcher) .setTitle("Mofa")
+				 * .setMessage("你确定退出图片编辑吗？") .setPositiveButton("确定", new
+				 * DialogInterface.OnClickListener() {
+				 * 
+				 * @Override public void onClick(DialogInterface dialog, int
+				 * which) { Intent intent = new Intent();
+				 * intent.setClass(MainActivity.this, ViewpagerActivity.class);
+				 * startActivity(intent); finish(); } })
+				 * .setNegativeButton("取消", new
+				 * DialogInterface.OnClickListener() {
+				 * 
+				 * @Override public void onClick(DialogInterface dialog, int
+				 * which) {
+				 * 
+				 * } }).show();
+				 */
 			}
 		});
 
@@ -781,8 +833,8 @@ public class MainActivity extends Activity {
 
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
-				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutFont.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
 
 				// drawNewBitmap(myImageView, str1);
 			}
@@ -795,8 +847,8 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
-				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutTextsize.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
 
 				// drawNewBitmap(myImageView, str1);
 			}
@@ -807,8 +859,8 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
-				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutTmd.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
 			}
 		});
 
@@ -819,8 +871,8 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
-				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutColor.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
 
 				// drawNewBitmap(myImageView, str1);
 			}
@@ -833,8 +885,8 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
-				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutShadow.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.VISIBLE);
 
 				// drawNewBitmap(myImageView, str1);
 			}
@@ -2037,21 +2089,21 @@ public class MainActivity extends Activity {
 			// return newBitmap;
 
 			Matrix matrix = new Matrix();
-			matrix.postScale(0.4f, 0.4f); // 长和宽放大缩小的比例
+			matrix.postScale(0.25f, 0.25f); // 长和宽放大缩小的比例
 			Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0,
 					bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
 			Bitmap result0 = rsBlur(resizeBmp, MainActivity.this, progress0 + 1);
 			Bitmap result1 = rsBlur(result0, MainActivity.this, progress0 + 1);
 			Bitmap result = rsBlur(result1, MainActivity.this, progress0 + 1);
-			
-			//draw(bitmap, "aaa");
-			
+
+			// draw(bitmap, "aaa");
+
 			Matrix matrix0 = new Matrix();
-			matrix0.postScale(2.5f, 2.5f); // 长和宽放大缩小的比例
+			matrix0.postScale(4f, 4f); // 长和宽放大缩小的比例
 			Bitmap resizeBmp0 = Bitmap.createBitmap(result, 0, 0,
 					result.getWidth(), result.getHeight(), matrix, true);
-			
+
 			myImageView.setImageBitmap(resizeBmp0);
 			newBitmap = resizeBmp0;
 			icon = newBitmap;
@@ -2083,7 +2135,7 @@ public class MainActivity extends Activity {
 			return null;
 		}
 	}
-	
+
 	private void draw(Bitmap imageView, String str) {
 		Bitmap photo = imageView;
 
@@ -2126,7 +2178,7 @@ public class MainActivity extends Activity {
 		canvas.drawText(str, startX, startY, textPaint);
 		canvas.save(Canvas.ALL_SAVE_FLAG);
 		canvas.restore();
-		imageView=icon;
+		imageView = icon;
 
 	}
 

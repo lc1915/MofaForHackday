@@ -55,6 +55,13 @@ public class SettingActivity extends Activity implements OnTouchListener,
 				finish();
 			}
 		});
+		
+		checkButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
 	}
 

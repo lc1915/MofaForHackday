@@ -36,4 +36,6 @@
 <color name="color33">#06B9D1</color>   
 <color name="color34">#9C5657</color>   
 <color name="color35">#BE7591</color>      
+<drawable name="pressed">#ebebeb</drawable>
+<drawable name="nonpressed">#ffffff</drawable>
 </resources> 

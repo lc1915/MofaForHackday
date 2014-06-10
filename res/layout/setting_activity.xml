@@ -13,7 +13,7 @@
         <Button
             android:id="@+id/button1"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_above="@+id/button2"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
@@ -21,13 +21,14 @@
             android:layout_marginRight="70dp"
             android:background="@drawable/buttonclick_selector"
             android:gravity="center"
+            android:textSize="20sp"
             android:text="关于"
             android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_above="@+id/button3"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
@@ -36,12 +37,13 @@
             android:background="@drawable/buttonclick_selector"
             android:gravity="center"
             android:text="分享"
+            android:textSize="20sp"
             android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
@@ -49,6 +51,7 @@
             android:layout_marginRight="70dp"
             android:background="@drawable/buttonclick_selector"
             android:text="退出"
+            android:textSize="20sp"
             android:textColor="#ffffff" />
     </RelativeLayout>
 
@@ -60,5 +63,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:src="@drawable/mofa_0000_mofa" />
+
 
 </RelativeLayout>
