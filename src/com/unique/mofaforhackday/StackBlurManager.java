@@ -33,7 +33,6 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 public class StackBlurManager {
 
@@ -64,7 +63,6 @@ public class StackBlurManager {
 	 * @param image The image that will be analyed
 	 */
 	public StackBlurManager(Bitmap image) {
-		Log.e("aa", image+"");
 		_width=image.getWidth();
 		_height=image.getHeight();
 		_image = image;

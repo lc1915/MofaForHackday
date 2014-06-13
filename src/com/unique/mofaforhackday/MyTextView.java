@@ -3,7 +3,6 @@ package com.unique.mofaforhackday;
 import android.R.integer;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -55,7 +54,6 @@ class MyTextView extends TextView {
 				t = iTop + iDelty;
 				r = iLeft + iDeltx + getWidth();
 				b = iTop + iDelty + getHeight();
-				Log.e("aaa", l+" "+t+" "+r+" "+b);
 			}
 
 			break;

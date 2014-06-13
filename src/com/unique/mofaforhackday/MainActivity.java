@@ -16,6 +16,8 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -37,7 +39,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -137,6 +138,7 @@ public class MainActivity extends Activity {
 
 	private ToggleButton switch1;
 	private ToggleButton switch_font;
+	private ToggleButton switch_quse;
 
 	private Button color1Button;
 	private Button color2Button;
@@ -205,11 +207,11 @@ public class MainActivity extends Activity {
 	private ImageButton font29Button;
 	private ImageButton font30Button;
 
+	private ImageButton morenButton;
 	private ImageButton miaowuButton;
-	private ImageButton zhiyiButton;
-	private ImageButton changmeiButton;
 	private ImageButton daofengButton;
-	private ImageButton tianniuButton;
+	private ImageButton shangheiButton;
+	private ImageButton yueheiButton;
 
 	private RelativeLayout relativeLayout01;
 	private RelativeLayout relativeLayout1;
@@ -219,6 +221,7 @@ public class MainActivity extends Activity {
 	private RelativeLayout relativeLayoutTmd;
 	private HorizontalScrollView relativeLayoutColor;
 	private RelativeLayout relativeLayoutShadow;
+	private RelativeLayout relativeLayoutQuse;
 
 	private HorizontalScrollView horizontalScrollView1;
 	private HorizontalScrollView horizontalScrollView2;
@@ -237,6 +240,15 @@ public class MainActivity extends Activity {
 
 	private StackBlurManager stackBlurManager;
 	Handler mHandler = new Handler();
+
+	Dialog dialog;
+	Dialog dialog0;
+	SharedPreferences sharedPreferences0;
+
+	static boolean first_main = true;
+	private boolean first = true;
+	static boolean first0 = true;
+	private boolean first_click = true;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -257,14 +269,39 @@ public class MainActivity extends Activity {
 				RelativeLayout.LayoutParams.MATCH_PARENT);
 		rl.setMargins(getWindowManager().getDefaultDisplay().getWidth() / 2,
 				getWindowManager().getDefaultDisplay().getHeight() / 2, 0, 0);
-		Log.i("width", getWindowManager().getDefaultDisplay().getWidth() / 2
-				+ "");
-		Log.i("height", getWindowManager().getDefaultDisplay().getHeight() / 2
-				+ "");
 		textView.setLayoutParams(rl);
 		mainLayout.addView(textView);
 
 		findViewById();
+
+		dialog0 = new Dialog(this, R.style.mydialog);// 自定义dialog全屏style
+
+		// sharedpreferences判断
+		sharedPreferences0 = this.getSharedPreferences("share", MODE_PRIVATE);
+		Editor editor0 = sharedPreferences0.edit();
+
+		if (CutPictureActivity.signal == 1 && first_main == true
+				&& first == true) {
+			editor0.putBoolean("isFirstRun", false);
+			editor0.commit();
+
+			first_main = false;
+			first = false;
+
+			// 首次启动应用 显示用户指导dialog
+			dialog = new Dialog(this, R.style.mydialog);// 自定义dialog全屏style
+			dialog.setContentView(R.layout.dialog_layout1);
+			RelativeLayout dialogLayout = (RelativeLayout) dialog
+					.findViewById(R.id.dialog);
+			dialogLayout.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+			dialog.show();
+		} else {
+		}
 
 		wrapSlidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
 			@SuppressLint("NewApi")
@@ -281,7 +318,6 @@ public class MainActivity extends Activity {
 			@Override
 			public void onDrawerClosed() {
 				// TODO Auto-generated method stub
-				Log.e("tag", handleSelector.getBackground() + "");
 				handleSelector.setBackground(getResources().getDrawable(
 						R.drawable.mofa_up_down));
 			}
@@ -305,7 +341,7 @@ public class MainActivity extends Activity {
 		textView.setShadowLayer(10, 0, 4, R.color.myColor);// 设置阴影
 		textView.setTextSize(textSize);// 字体大小
 		textView.setTextColor(Color.WHITE);
-		textView.setTypeface(Typeface.createFromAsset(assetManager, fontString));
+		textView.setTypeface(Typeface.DEFAULT);
 
 		final Context context = this;
 
@@ -363,6 +399,8 @@ public class MainActivity extends Activity {
 		switch1.setChecked(true);
 		switch_font = (ToggleButton) findViewById(R.id.switch_font);
 		switch_font.setChecked(true);
+		switch_quse = (ToggleButton) findViewById(R.id.switch_quse);
+		switch_quse.setChecked(false);
 		handleSelector = (ImageButton) findViewById(R.id.handle_selector);
 		wrapSlidingDrawer = (WrapSlidingDrawer) findViewById(R.id.slidingDrawer1);
 
@@ -459,11 +497,11 @@ public class MainActivity extends Activity {
 		font29Button = (ImageButton) findViewById(R.id.imageButton_font29);
 		font30Button = (ImageButton) findViewById(R.id.imageButton_font30);
 
-		miaowuButton = (ImageButton) findViewById(R.id.imageButton_miaowu);
-		zhiyiButton = (ImageButton) findViewById(R.id.imageButton_zhiyi);
-		changmeiButton = (ImageButton) findViewById(R.id.imageButton_changmei);
-		daofengButton = (ImageButton) findViewById(R.id.imageButton_daofeng);
-		tianniuButton = (ImageButton) findViewById(R.id.imageButton_tianniu);
+		morenButton = (ImageButton) findViewById(R.id.imageButton_miaowu);
+		miaowuButton = (ImageButton) findViewById(R.id.imageButton_zhiyi);
+		daofengButton = (ImageButton) findViewById(R.id.imageButton_changmei);
+		shangheiButton = (ImageButton) findViewById(R.id.imageButton_daofeng);
+		yueheiButton = (ImageButton) findViewById(R.id.imageButton_tianniu);
 
 		relativeLayout01 = (RelativeLayout) findViewById(R.id.relativeLayout01);
 		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
@@ -473,6 +511,7 @@ public class MainActivity extends Activity {
 		relativeLayoutTmd = (RelativeLayout) findViewById(R.id.relativeLayout_tmd);
 		relativeLayoutColor = (HorizontalScrollView) findViewById(R.id.relativeLayout_color);
 		relativeLayoutShadow = (RelativeLayout) findViewById(R.id.relativeLayout_shadow);
+		relativeLayoutQuse = (RelativeLayout) findViewById(R.id.relativeLayout_quse);
 
 		horizontalScrollView1 = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
 		horizontalScrollView2 = (HorizontalScrollView) findViewById(R.id.horizontalScrollView2);
@@ -507,8 +546,6 @@ public class MainActivity extends Activity {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				progress0 = progress;
-
-				Log.e("progress", progress + "");
 
 				/*
 				 * if (progress0 == 3 | progress0 == 6 | progress0 == 9 |
@@ -550,7 +587,6 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 			}
@@ -586,7 +622,6 @@ public class MainActivity extends Activity {
 				int i = textView.getCurrentTextColor();
 
 				String ii = Integer.toHexString(i);
-				Log.e("int ii", "ii=" + ii);
 				String subs = ii.substring((ii.length() - 6), ii.length());
 				int progressa = progress + 10;
 
@@ -632,6 +667,23 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		switch_quse.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				// TODO Auto-generated method stub
+				if (gray == false) {
+					Bitmap icon0 = toGrayscale(icon);
+					myImageView.setImageBitmap(icon0);
+					gray = true;
+				} else {
+					myImageView.setImageBitmap(icon);
+					gray = false;
+				}
+			}
+		});
+
 		editText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -645,7 +697,6 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 			}
@@ -664,7 +715,6 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 			}
@@ -675,6 +725,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.VISIBLE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.GONE);
 			}
 		});
@@ -684,26 +735,59 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				relativeLayout01.setVisibility(View.GONE);
 				relativeLayout1.setVisibility(View.VISIBLE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.GONE);
 				relativeLayoutFont.setVisibility(View.GONE);
 				relativeLayoutColor.setVisibility(View.GONE);
 				relativeLayoutShadow.setVisibility(View.GONE);
 				relativeLayoutTextsize.setVisibility(View.GONE);
 				relativeLayoutTmd.setVisibility(View.GONE);
+
+				// sharedpreferences判断
+				Editor editor0 = sharedPreferences0.edit();
+
+				if (CutPictureActivity.signal == 1 && first0 == true
+						&& first_click == true) {
+					editor0.putBoolean("isFirstRun", false);
+					editor0.commit();
+
+					first0 = false;
+					first_click=false;
+
+					// 首次启动应用 显示用户指导dialog
+
+					dialog0.setContentView(R.layout.dialog_layout);
+					RelativeLayout dialogLayout = (RelativeLayout) dialog0
+							.findViewById(R.id.dialog);
+					dialogLayout.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							dialog0.dismiss();
+						}
+					});
+					dialog0.show();
+				} else {
+				}
 			}
 		});
 
 		quseButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (gray == false) {
-					Bitmap icon0 = toGrayscale(icon);
-					myImageView.setImageBitmap(icon0);
-					gray = true;
-				} else {
-					myImageView.setImageBitmap(icon);
-					gray = false;
-				}
+				relativeLayout01.setVisibility(View.GONE);
+				relativeLayout1.setVisibility(View.GONE);
+				relativeLayoutQuse.setVisibility(View.VISIBLE);
+				relativeLayoutmore.setVisibility(View.GONE);
+				relativeLayoutFont.setVisibility(View.GONE);
+				relativeLayoutColor.setVisibility(View.GONE);
+				relativeLayoutShadow.setVisibility(View.GONE);
+				relativeLayoutTextsize.setVisibility(View.GONE);
+				relativeLayoutTmd.setVisibility(View.GONE);
+				/*
+				 * if (gray == false) { Bitmap icon0 = toGrayscale(icon);
+				 * myImageView.setImageBitmap(icon0); gray = true; } else {
+				 * myImageView.setImageBitmap(icon); gray = false; }
+				 */
 
 			}
 		});
@@ -725,7 +809,6 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 
@@ -740,8 +823,8 @@ public class MainActivity extends Activity {
 
 		// 布局文件转换为view对象
 		LayoutInflater inflater = LayoutInflater.from(this);
-		layout = (RelativeLayout) inflater.inflate(R.layout.layout_dialog,
-				null);
+		layout = (RelativeLayout) inflater
+				.inflate(R.layout.layout_dialog, null);
 
 		quxiaoButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -760,22 +843,22 @@ public class MainActivity extends Activity {
 				Button btnCancel = (Button) layout
 						.findViewById(R.id.dialog_cancel);
 				btnCancel.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
-						Toast.makeText(getApplicationContext(), "cancel",
-								Toast.LENGTH_SHORT).show();
+						dialog.dismiss();
 					}
 				});
 
 				// 确定按钮
 				Button btnOK = (Button) layout.findViewById(R.id.dialog_ok);
 				btnOK.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
-						Toast.makeText(getApplicationContext(), "ok",
-								Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent();
+						intent.setClass(MainActivity.this,
+								ViewpagerActivity.class);
+						startActivity(intent);
+						finish();
 					}
 				});
 
@@ -783,7 +866,6 @@ public class MainActivity extends Activity {
 				ImageButton btnClose = (ImageButton) layout
 						.findViewById(R.id.dialog_close);
 				btnClose.setOnClickListener(new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
 						dialog.dismiss();
@@ -924,7 +1006,6 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				icon = convertViewToBitmap(mainLayout);
@@ -947,7 +1028,6 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				icon = convertViewToBitmap(mainLayout);
@@ -1206,13 +1286,13 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f1.ttf";
-				Log.e("aaa", fontString);
+
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
 						fontString));
 			}
@@ -1230,7 +1310,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1251,7 +1331,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1272,7 +1352,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1293,7 +1373,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1315,7 +1395,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1337,7 +1417,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1358,7 +1438,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1379,7 +1459,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1400,7 +1480,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1422,7 +1502,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1444,7 +1524,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1465,7 +1545,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1486,7 +1566,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1507,7 +1587,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1529,7 +1609,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1551,7 +1631,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1572,7 +1652,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1593,7 +1673,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1614,7 +1694,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1636,7 +1716,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1658,7 +1738,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1679,7 +1759,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1700,7 +1780,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1721,7 +1801,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1743,7 +1823,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1765,7 +1845,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1786,7 +1866,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1807,7 +1887,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
@@ -1828,13 +1908,34 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 				AssetManager assetManager = getApplicationContext().getAssets();
 				fontString = "font/f30.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
 						fontString));
+			}
+		});
+
+		morenButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
+
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
+				AssetManager assetManager = getApplicationContext().getAssets();
+				textView.setTypeface(Typeface.DEFAULT);
 			}
 		});
 
@@ -1850,7 +1951,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 
@@ -1861,50 +1962,6 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		zhiyiButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mainLayout.removeView(textView);
-
-				if (MyTextView.l != 0)
-					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
-				else {
-					rl.setMargins(getWindowManager().getDefaultDisplay()
-							.getWidth() / 2, getWindowManager()
-							.getDefaultDisplay().getHeight() / 2, 0, 0);
-				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
-				textView.setLayoutParams(rl);
-				mainLayout.addView(textView);
-
-				AssetManager assetManager = getApplicationContext().getAssets();
-				fontString = "font/zhiyi.ttf";
-				textView.setTypeface(Typeface.createFromAsset(assetManager,
-						fontString));
-			}
-		});
-		changmeiButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mainLayout.removeView(textView);
-
-				if (MyTextView.l != 0)
-					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
-				else {
-					rl.setMargins(getWindowManager().getDefaultDisplay()
-							.getWidth() / 2, getWindowManager()
-							.getDefaultDisplay().getHeight() / 2, 0, 0);
-				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
-				textView.setLayoutParams(rl);
-				mainLayout.addView(textView);
-
-				AssetManager assetManager = getApplicationContext().getAssets();
-				fontString = "font/changmei.ttf";
-				textView.setTypeface(Typeface.createFromAsset(assetManager,
-						fontString));
-			}
-		});
 		daofengButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -1917,7 +1974,7 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 
@@ -1927,7 +1984,7 @@ public class MainActivity extends Activity {
 						fontString));
 			}
 		});
-		tianniuButton.setOnClickListener(new OnClickListener() {
+		shangheiButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mainLayout.removeView(textView);
@@ -1939,12 +1996,34 @@ public class MainActivity extends Activity {
 							.getWidth() / 2, getWindowManager()
 							.getDefaultDisplay().getHeight() / 2, 0, 0);
 				}
-				Log.e("aaa", MyTextView.l + " " + MyTextView.r);
+
 				textView.setLayoutParams(rl);
 				mainLayout.addView(textView);
 
 				AssetManager assetManager = getApplicationContext().getAssets();
-				fontString = "font/tianniu.ttf";
+				fontString = "font/shanghei.ttf";
+				textView.setTypeface(Typeface.createFromAsset(assetManager,
+						fontString));
+			}
+		});
+		yueheiButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mainLayout.removeView(textView);
+
+				if (MyTextView.l != 0)
+					rl.setMargins(MyTextView.l, MyTextView.t, 0, 0);
+				else {
+					rl.setMargins(getWindowManager().getDefaultDisplay()
+							.getWidth() / 2, getWindowManager()
+							.getDefaultDisplay().getHeight() / 2, 0, 0);
+				}
+
+				textView.setLayoutParams(rl);
+				mainLayout.addView(textView);
+
+				AssetManager assetManager = getApplicationContext().getAssets();
+				fontString = "font/yuehei.ttf";
 				textView.setTypeface(Typeface.createFromAsset(assetManager,
 						fontString));
 			}
@@ -1955,6 +2034,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutShadow.setVisibility(View.VISIBLE);
 				relativeLayoutTmd.setVisibility(View.GONE);
@@ -1971,6 +2051,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutTextsize.setVisibility(View.VISIBLE);
 				relativeLayoutTmd.setVisibility(View.GONE);
@@ -1987,6 +2068,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutTmd.setVisibility(View.VISIBLE);
 				relativeLayoutTextsize.setVisibility(View.GONE);
@@ -2003,6 +2085,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutColor.setVisibility(View.VISIBLE);
 				relativeLayoutTmd.setVisibility(View.GONE);
@@ -2019,6 +2102,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				relativeLayout1.setVisibility(View.GONE);
 				relativeLayout01.setVisibility(View.GONE);
+				relativeLayoutQuse.setVisibility(View.GONE);
 				relativeLayoutmore.setVisibility(View.VISIBLE);
 				relativeLayoutFont.setVisibility(View.VISIBLE);
 				relativeLayoutTmd.setVisibility(View.GONE);
@@ -2081,7 +2165,7 @@ public class MainActivity extends Activity {
 	class AsyncTaskThread extends AsyncTask<String, Integer, Bitmap> {
 
 		protected Bitmap doInBackground(Bitmap bitmap) {
-			Log.e("asd", "asdf");
+
 			// 改变模糊上限
 			// stackBlurManager.process(progress0 * 2);
 			// myImageView.setImageBitmap(stackBlurManager.returnBlurredImage());
@@ -2236,7 +2320,7 @@ public class MainActivity extends Activity {
 
 		// 设置自带字体
 		AssetManager assetManager = getApplicationContext().getAssets();
-		Log.e("ziti", fontString);
+
 		Typeface typeFace = Typeface.createFromAsset(assetManager, fontString);
 		textPaint.setTypeface(typeFace);
 
@@ -2288,9 +2372,8 @@ public class MainActivity extends Activity {
 
 				// 记录开始触摸的点的坐标
 				startX = event.getX();
-				Log.e("startx", startX + "");
+
 				startY = event.getY();
-				Log.e("starty", startY + "");
 
 				/*
 				 * float x = 360; float y = 540; if (width > 720 && height >
@@ -2336,7 +2419,7 @@ public class MainActivity extends Activity {
 
 	// 读取asset中的图片（未使用）
 	private Bitmap getBitmapFromAsset(Context context, String strName) {
-		Log.e("a", "first");
+
 		AssetManager assetManager = context.getAssets();
 		InputStream istr;
 		Bitmap bitmap = null;

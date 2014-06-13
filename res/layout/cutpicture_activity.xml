@@ -36,7 +36,7 @@
             android:layout_below="@id/imageButton1"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:text="拖动或缩放图片进行裁剪" />
+            android:text="" />
     </RelativeLayout>
 
 </RelativeLayout>

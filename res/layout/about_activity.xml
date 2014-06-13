@@ -64,5 +64,15 @@
         android:layout_marginBottom="25dp"
         android:text="官方网站：www.hustunique.com"
         android:textColor="#ffffff" />
+    
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="7dp"
+        android:text="应用版本：V1.0.0"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

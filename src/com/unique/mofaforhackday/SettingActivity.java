@@ -1,7 +1,10 @@
 package com.unique.mofaforhackday;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -17,7 +20,7 @@ import android.widget.RelativeLayout;
 
 public class SettingActivity extends Activity implements OnTouchListener,
 		OnGestureListener {
-	
+
 	GestureDetector mGestureDetector;
 
 	private Button aboutButton;
@@ -29,12 +32,12 @@ public class SettingActivity extends Activity implements OnTouchListener,
 
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
-		//this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		//		WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
+		// this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		// WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.setting_activity);
-		
+
 		mGestureDetector = new GestureDetector((OnGestureListener) this);
-		RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.relativelayout000);
+		RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout000);
 		relativeLayout.setOnTouchListener(this);
 		relativeLayout.setLongClickable(true);
 
@@ -55,7 +58,7 @@ public class SettingActivity extends Activity implements OnTouchListener,
 				finish();
 			}
 		});
-		
+
 		checkButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -104,20 +107,22 @@ public class SettingActivity extends Activity implements OnTouchListener,
 				&& Math.abs(velocityX) > snsConstant.getFlingMinVelocity()) {
 
 			// 切换Activity
-			//Intent intent = new Intent(AboutActivity.this,
-			//		UpdateStatusActivity.class);
-			//startActivity(intent);
-			//overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-			//Toast.makeText(this, "向左手势", Toast.LENGTH_SHORT).show();
+			// Intent intent = new Intent(AboutActivity.this,
+			// UpdateStatusActivity.class);
+			// startActivity(intent);
+			// overridePendingTransition(R.anim.in_from_right,
+			// R.anim.out_to_left);
+			// Toast.makeText(this, "向左手势", Toast.LENGTH_SHORT).show();
 		} else if (e2.getX() - e1.getX() > snsConstant.getFlingMinDistance()
 				&& Math.abs(velocityX) > snsConstant.getFlingMinVelocity()) {
 
-			/*Intent intent = new Intent(SettingActivity.this,
-					FirstActivity.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-			//Toast.makeText(this, "向右手势", Toast.LENGTH_SHORT).show();
-			finish();*/
+			/*
+			 * Intent intent = new Intent(SettingActivity.this,
+			 * FirstActivity.class); startActivity(intent);
+			 * overridePendingTransition(R.anim.in_from_left,
+			 * R.anim.out_to_right); //Toast.makeText(this, "向右手势",
+			 * Toast.LENGTH_SHORT).show(); finish();
+			 */
 		}
 		return false;
 	}

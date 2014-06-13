@@ -1,15 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-<!-- 背景图 -->
-  <item
-    android:id="@+android:id/background"
-    android:drawable="@drawable/mofa_0004_seekbar_white" />
-    <!--全部能量图  -->
-  <item
-    android:id="@+android:id/SecondaryProgress"
-    android:drawable="@drawable/mofa_0004_seekbar_white" />
-    <!-- 进和能量图 -->
-  <item
-    android:id="@+android:id/progress"
-    android:drawable="@drawable/b_0013_jindutiao" />
-</layer-list>
+<?xml version="1.0" encoding="UTF-8"?>                
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">                
+<!--  设置背景色  -->                   
+<item  android:id="@android:id/background" >                  
+<shape>    
+    <corners android:radius="5dip" />                   
+        <gradient android:startColor="#ffffff"                  
+              android:endColor="#ffffff" />                  
+</shape>                 
+</item>                                    
+    
+<!--  设置进度条颜色  -->                   
+<item  android:id="@android:id/progress" >                  
+<clip>                   
+    <shape>                    
+        <corners android:radius="5dip" />                    
+    <gradient  android:startColor="#e96f74"                   
+           android:endColor="#e96f74" />                   
+    </shape>                  
+</clip>                 
+</item>                
+    
+</layer-list>   

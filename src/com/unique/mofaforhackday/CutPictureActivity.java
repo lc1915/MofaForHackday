@@ -1,7 +1,11 @@
 package com.unique.mofaforhackday;
 
+import android.R.integer;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -13,16 +17,18 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.telephony.SignalStrength;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
 
@@ -39,6 +45,10 @@ public class CutPictureActivity extends Activity {
 	private int height;
 	private Matrix matrix0 = new Matrix();
 
+	Dialog dialog;
+	static int signal = 0;
+	static boolean first = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,13 +60,13 @@ public class CutPictureActivity extends Activity {
 		imageButton = (ImageButton) findViewById(R.id.imageButton1);
 		imageView = (ImageView) findViewById(R.id.imageView1);
 		imageView.setOnTouchListener(new TouchListener());
-		textView=(TextView)findViewById(R.id.textView1);
+		textView = (TextView) findViewById(R.id.textView1);
 		textView.setTextColor(Color.WHITE);
 		textView.setShadowLayer(10, 0, 4, R.color.myColor);
-		
+
 		bitmap0 = ViewpagerActivity.bitmap;
 		icon = ViewpagerActivity.bitmap;
-		
+
 		// 图片居中显示
 		width = getWindowManager().getDefaultDisplay().getWidth() / 2
 				- bitmap0.getWidth() / 2;
@@ -69,12 +79,36 @@ public class CutPictureActivity extends Activity {
 
 		width0 = getWindowManager().getDefaultDisplay().getWidth();
 		height0 = getWindowManager().getDefaultDisplay().getHeight();
-		Log.e("aaa",
-				"屏幕宽度" + width0 + " 屏幕高度" + height0 + " 图片宽度"
-						+ bitmap0.getWidth() + " 图片高度" + bitmap0.getHeight());
 
 		imageView.setImageBitmap(bitmap0);
 		imageView.setDrawingCacheEnabled(true);
+
+		// sharedpreferences判断
+		SharedPreferences sharedPreferences0 = this.getSharedPreferences(
+				"share", MODE_PRIVATE);
+		boolean isFirstRun = sharedPreferences0.getBoolean("isFirstRun", true);
+		Editor editor0 = sharedPreferences0.edit();
+
+		if (isFirstRun && first == true && MainActivity.first_main == true) {
+			first = false;
+			signal = 1;
+			editor0.putBoolean("isFirstRun", false);
+			editor0.commit();
+
+			// 首次启动应用 显示用户指导dialog
+			dialog = new Dialog(this, R.style.mydialog);// 自定义dialog全屏style
+			dialog.setContentView(R.layout.dialog_layout0);
+			RelativeLayout dialogLayout = (RelativeLayout) dialog
+					.findViewById(R.id.dialog);
+			dialogLayout.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+			dialog.show();
+		} else {
+		}
 
 		// 监听 保存button2
 		imageButton.setOnClickListener(new OnClickListener() {
@@ -129,8 +163,8 @@ public class CutPictureActivity extends Activity {
 				break; // 手指在屏幕上移动，改事件会被不断触发
 			case MotionEvent.ACTION_MOVE: // 拖拉图片
 				if (mode == MODE_DRAG) {
-					int deltaX=(bitmap0.getWidth()-width0)/2;
-					int deltaY=(bitmap0.getHeight()-height0)/2;
+					int deltaX = (bitmap0.getWidth() - width0) / 2;
+					int deltaY = (bitmap0.getHeight() - height0) / 2;
 					float dx = event.getX() - startPoint.x; // 得到x轴的移动距离
 					float dy = event.getY() - startPoint.y; // 得到x轴的移动距离 //
 															// 在没有移动之前的位置上进行移动

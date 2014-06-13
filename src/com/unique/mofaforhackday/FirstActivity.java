@@ -14,7 +14,6 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -41,8 +40,8 @@ public class FirstActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去标题栏
-		//this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		//		WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
+		// this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		// WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		setContentView(R.layout.first_activity);
 
 		WindowManager manager = getWindowManager();
@@ -120,12 +119,8 @@ public class FirstActivity extends Activity {
 			// 压缩图片 避免出现OOM
 			try {
 				Display display = getWindowManager().getDefaultDisplay();
-				Log.i("view", "height:" + display.getHeight());
-				Log.i("view", "width:" + display.getWidth());
 				DisplayMetrics displayMetrics = getResources()
 						.getDisplayMetrics();
-				Log.i("view", "height" + displayMetrics.heightPixels);
-				Log.i("view", "width" + displayMetrics.widthPixels);
 
 				int x = displayMetrics.widthPixels;
 				int y = displayMetrics.heightPixels;
@@ -154,7 +149,7 @@ public class FirstActivity extends Activity {
 						matrix, true);
 
 			} catch (FileNotFoundException e) {
-				Log.e("Exception", e.getMessage(), e);
+
 			}
 
 			Intent intent = new Intent();

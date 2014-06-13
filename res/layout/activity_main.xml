@@ -51,7 +51,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/mofa_up_selector" />
+                android:background="@drawable/mofa_up_down" />
 
             <View
                 android:layout_width="fill_parent"
@@ -136,7 +136,7 @@
                     android:minHeight="3.15dp"
                     android:progressDrawable="@drawable/seek_drawable"
                     android:thumb="@drawable/thumb"
-                    android:thumbOffset="2.0dip" />
+                    android:thumbOffset="6dip" />
 
                 <ImageButton
                     android:id="@+id/jia"
@@ -384,7 +384,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="9.5dp"
                         android:layout_marginLeft="17dp"
-                        android:scrollbarThumbHorizontal="@drawable/mofa_0004_seekbar_white"
                         android:layout_toRightOf="@+id/switch_font" >
 
                         <LinearLayout
@@ -609,7 +608,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginBottom="1.5dp"
+                        android:layout_marginBottom="9.5dp"
                         android:layout_marginLeft="27dp"
                         android:layout_marginRight="27dp"
                         android:layout_toRightOf="@+id/switch_font"
@@ -624,35 +623,35 @@
                                 android:id="@+id/imageButton_miaowu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/miaowu" />
+                                android:background="@drawable/moren" />
 
                             <ImageButton
                                 android:id="@+id/imageButton_zhiyi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="30dp"
-                                android:background="@drawable/zhiyi" />
+                                android:background="@drawable/miaowu" />
 
                             <ImageButton
                                 android:id="@+id/imageButton_changmei"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="30dp"
-                                android:background="@drawable/changmei" />
+                                android:background="@drawable/daofeng" />
 
                             <ImageButton
                                 android:id="@+id/imageButton_daofeng"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="30dp"
-                                android:background="@drawable/daofeng" />
+                                android:background="@drawable/shanghei" />
 
                             <ImageButton
                                 android:id="@+id/imageButton_tianniu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="30dp"
-                                android:background="@drawable/tianniu" />
+                                android:background="@drawable/yuehei" />
                         </LinearLayout>
                     </HorizontalScrollView>
                 </RelativeLayout>
@@ -680,13 +679,13 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginLeft="13.5dp"
-                        android:layout_marginRight="13.5dp"
-                        android:maxHeight="13.15dp"
-                        android:minHeight="13.15dp"
+                        android:layout_marginLeft="25.5dp"
+                        android:layout_marginRight="25.5dp"
+                        android:maxHeight="3.15dp"
+                        android:minHeight="3.15dp"
                         android:progressDrawable="@drawable/seek_drawable_textsize"
                         android:thumb="@drawable/thumb"
-                        android:thumbOffset="5.0dip" />
+                        android:thumbOffset="6dip" />
 
                     <ImageButton
                         android:id="@+id/text_jia"
@@ -720,13 +719,13 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginLeft="13.5dp"
-                        android:layout_marginRight="13.5dp"
-                        android:maxHeight="13.15dp"
-                        android:minHeight="13.15dp"
-                        android:progressDrawable="@drawable/seek_drawable"
+                        android:layout_marginLeft="25.5dp"
+                        android:layout_marginRight="25.5dp"
+                        android:maxHeight="3.15dp"
+                        android:minHeight="3.15dp"
+                        android:progressDrawable="@drawable/seek_drawable_tmd"
                         android:thumb="@drawable/thumb"
-                        android:thumbOffset="5.0dip" />
+                        android:thumbOffset="6dip" />
 
                     <ImageButton
                         android:id="@+id/jiatmd"
@@ -1016,6 +1015,28 @@
                         android:textOff=""
                         android:textOn="" />
                 </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout_quse"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="1.5dp"
+                android:layout_marginLeft="28dp"
+                android:layout_marginRight="28dp"
+                android:visibility="gone" >
+
+                <ToggleButton
+                    android:id="@+id/switch_quse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/quse_toggle_selector"
+                    android:checked="true"
+                    android:textOff=""
+                    android:textOn="" />
             </RelativeLayout>
         </LinearLayout>
     </com.unique.mofaforhackday.WrapSlidingDrawer>

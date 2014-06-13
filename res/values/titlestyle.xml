@@ -8,6 +8,13 @@
             backward-compatibility can go here.
         -->
     </style>
+    
+    <style name="mydialog">  
+        <item name="android:windowFullscreen">true</item> 
+        <item name="android:windowNoTitle">true</item> 
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>  
 
     <drawable name="BackBar">#43abcd</drawable>
 

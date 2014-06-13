@@ -4,9 +4,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -15,7 +18,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -60,6 +62,8 @@ public class ViewpagerActivity extends Activity implements
 	private Uri selectedImage;
 	ContentResolver contentResolver;
 	private static int RESULT_LOAD_IMAGE = 0;
+	
+	Dialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,35 @@ public class ViewpagerActivity extends Activity implements
 		 * relativeLayout111.setOnTouchListener(this);
 		 * relativeLayout111.setLongClickable(true);
 		 */
+		
+		if(ViewpagerActivity.vp.getCurrentItem()==1){
+			// sharedpreferences判断
+			SharedPreferences sharedPreferences0 = this.getSharedPreferences(
+					"share", MODE_PRIVATE);
+			boolean isFirstRun = sharedPreferences0.getBoolean("isFirstRun", true);
+			Editor editor0 = sharedPreferences0.edit();
+
+			if (isFirstRun) {
+				
+				editor0.putBoolean("isFirstRun", false);
+				editor0.commit();
+
+				// 首次启动应用 显示用户指导dialog
+				dialog = new Dialog(this, R.style.mydialog);// 自定义dialog全屏style
+				dialog.setContentView(R.layout.dialog_layout0);
+				RelativeLayout dialogLayout = (RelativeLayout) dialog
+						.findViewById(R.id.dialog);
+				dialogLayout.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+				dialog.show();
+			} else {
+				
+			}
+		}
 
 		view0 = views.get(0);
 
@@ -212,12 +245,9 @@ public class ViewpagerActivity extends Activity implements
 			// 压缩图片 避免出现OOM
 			try {
 				Display display = getWindowManager().getDefaultDisplay();
-				Log.i("view", "height:" + display.getHeight());
-				Log.i("view", "width:" + display.getWidth());
+
 				DisplayMetrics displayMetrics = getResources()
 						.getDisplayMetrics();
-				Log.i("view", "height" + displayMetrics.heightPixels);
-				Log.i("view", "width" + displayMetrics.widthPixels);
 
 				int x = displayMetrics.widthPixels;
 				int y = displayMetrics.heightPixels;
@@ -247,7 +277,7 @@ public class ViewpagerActivity extends Activity implements
 				rotateBitmap(bitmap, 90);
 
 			} catch (FileNotFoundException e) {
-				Log.e("Exception", e.getMessage(), e);
+				
 			}
 
 			Intent intent = new Intent();

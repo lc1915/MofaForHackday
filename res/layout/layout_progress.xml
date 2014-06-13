@@ -4,8 +4,10 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical" >
+
     <ProgressBar
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:indeterminateDrawable="@drawable/progress" />
+
 </LinearLayout>
